@@ -60,5 +60,10 @@ For more information on using the Angular CLI, including detailed command refere
 
 
 ## Deploy
+```bash
 ng build --base-href "/"
+```
+```bash
 npx angular-cli-ghpages --dir=dist/vm-ap-portal/browser
+```
+
