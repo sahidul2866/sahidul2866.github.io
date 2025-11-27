@@ -1,0 +1,56 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">Project Overview</p>
+      <h2>Bedrock VM/AP Analytics Portal</h2>
+      <p class="lede">Purpose, background, and why the portal matters.</p>
+    </div>
+  </div>
+
+  <mat-card class="card-block">
+    <h3>Purpose</h3>
+    <p>
+      Replace slow, manual, Excel-based VM/AP analysis with a centralized, secure, and scalable Snowflake-powered portal.
+      Deliver instant duplicate detection, historical spend visibility, and audit-ready reporting with zero manual file transfers.
+    </p>
+    <button mat-stroked-button color="primary" (click)="exportCsv()">
+      <mat-icon>file_download</mat-icon>
+      Export overview
+    </button>
+    <button mat-stroked-button color="primary" (click)="exportExcel()">
+      <mat-icon>file_download</mat-icon>
+      Excel
+    </button>
+  </mat-card>
+
+  <div class="grid">
+    <mat-card class="card-block">
+      <h3>Background & Current Challenges</h3>
+      <ul>
+        <li>Analysts run SQL manually across ERPs; results exported to Excel and emailed.</li>
+        <li>No version control or data lineage; audit reviews tracked separately.</li>
+        <li>ERP extracts too large for Excel; incomplete datasets and slow analysis.</li>
+        <li>Security risk from emailed vendor/payment data; PII exposure potential.</li>
+        <li>Every ERP needs different logic; hard to standardize or automate.</li>
+        <li>No permanent audit trail; weak defensibility during audits.</li>
+      </ul>
+    </mat-card>
+
+    <mat-card class="card-block">
+      <h3>Why build the portal</h3>
+      <ul>
+        <li>Centralize data in Snowflake as a single source of truth.</li>
+        <li>Real-time duplicate detection, spend metrics, and audit dashboards.</li>
+        <li>Self-service analytics for auditors/managers without SQL.</li>
+        <li>Reduce processing time and manual errors by 60%+.</li>
+        <li>Establish traceability, governance, and security compliance.</li>
+      </ul>
+    </mat-card>
+  </div>
+
+  <mat-card class="card-block">
+    <h3>Non-technical summary</h3>
+    <p>Secure login, live Snowflake data, interactive dashboards, browser-based filtering/commenting/export, full audit logging.</p>
+    <p class="quote">“No more Excel chaos, no more SQL re-runs — just clean, auditable data available 24/7.”</p>
+  </mat-card>
+</div>

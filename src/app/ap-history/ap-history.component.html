@@ -1,0 +1,114 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">AP Historical</p>
+      <h2>AP history (mock)</h2>
+      <p class="lede">Search, filter, export, and mark duplicate decisions.</p>
+    </div>
+    <div class="actions">
+      <button mat-stroked-button color="primary" (click)="exportCsv()">
+        <mat-icon>file_download</mat-icon>
+        Export CSV
+      </button>
+      <button mat-stroked-button color="primary" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon>
+        Export Excel
+      </button>
+      <button mat-button (click)="resetFilters()">Reset filters</button>
+    </div>
+  </div>
+
+  <mat-card class="controls">
+    <div class="control-row">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Search</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput (keyup)="applyTextFilter($event)" placeholder="Vendor, invoice, match #" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-medium">
+        <mat-label>Vendor</mat-label>
+        <mat-select [(value)]="filters.vendor" (selectionChange)="applyFilters()">
+          <mat-option *ngFor="let v of vendorOptions" [value]="v">{{ v }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-small">
+        <mat-label>Min InvAmt</mat-label>
+        <input matInput type="number" [(ngModel)]="filters.minInv" (ngModelChange)="applyFilters()" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-small">
+        <mat-label>Max InvAmt</mat-label>
+        <input matInput type="number" [(ngModel)]="filters.maxInv" (ngModelChange)="applyFilters()" />
+      </mat-form-field>
+
+      <mat-slide-toggle color="primary" [(ngModel)]="filters.dupeOnly" (change)="applyFilters()">
+        Show duplicates only
+      </mat-slide-toggle>
+    </div>
+  </mat-card>
+
+  <div class="table-container card">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="VndName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Vendor</th>
+        <td mat-cell *matCellDef="let r">
+          <div class="vendor">{{ r.VndName }}</div>
+          <div class="meta">{{ r.VndNum }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="VndNum">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Vendor #</th>
+        <td mat-cell *matCellDef="let r">{{ r.VndNum }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="InvNum">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Inv #</th>
+        <td mat-cell *matCellDef="let r">{{ r.InvNum }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="InvDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Inv Date</th>
+        <td mat-cell *matCellDef="let r">{{ r.InvDate | date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="InvAmt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+        <td mat-cell *matCellDef="let r">{{ r.InvAmt | currency:r.CurrCode:'symbol':'1.0-2' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="CurrCode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>CCY</th>
+        <td mat-cell *matCellDef="let r">{{ r.CurrCode }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="FY">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>FY</th>
+        <td mat-cell *matCellDef="let r">{{ r.FY }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="PmtDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pmt Date</th>
+        <td mat-cell *matCellDef="let r">{{ r.PmtDate | date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="PmtAmt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pmt Amt</th>
+        <td mat-cell *matCellDef="let r">{{ r.PmtAmt | currency:r.CurrCode:'symbol':'1.0-2' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="DupeX">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Dup Flag</th>
+        <td mat-cell *matCellDef="let r">{{ r.DupeX > 0 ? 'Potential' : 'Clean' }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]"></mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,110 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">Snapshot</p>
+      <h2>Audit posture</h2>
+      <p class="lede">Mock data wired into the experience — Snowflake feed will slot in later.</p>
+    </div>
+    <div class="badge-row">
+      <span class="pill pill--muted">FY2025 focus</span>
+      <span class="pill pill--success">Live mock</span>
+      <span class="pill pill--muted">Controls ready</span>
+      <button mat-stroked-button color="primary" (click)="exportCsv()">
+        <mat-icon>file_download</mat-icon>
+        Export
+      </button>
+      <button mat-stroked-button color="primary" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon>
+        Excel
+      </button>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <mat-card class="stat-card stat-card--accent">
+      <div class="stat-card__label">Total Spend FY2025</div>
+      <div class="stat-card__value">
+        {{ stats?.totalSpendFY2025 | currency:'USD':'symbol':'1.0-0' }}
+      </div>
+      <div class="stat-card__hint">Across connected ERP mocks</div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-card__label">Total Vendors</div>
+      <div class="stat-card__value">{{ stats?.totalVendors }}</div>
+      <div class="progress">
+        <div class="progress__bar" [style.width.%]="stats?.totalVendors ? 100 : 0"></div>
+      </div>
+      <div class="stat-card__hint">Active suppliers in current lens</div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-card__label">High-risk vendors</div>
+      <div class="stat-card__value accent-warn">{{ stats?.highRiskVendors }}</div>
+      <div class="progress progress--warn">
+        <div
+          class="progress__bar"
+          [style.width.%]="stats?.totalVendors ? (stats?.highRiskVendors / stats?.totalVendors) * 100 : 0"
+        ></div>
+      </div>
+      <div class="stat-card__hint">Risk score ≥ 70</div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-card__label">Duplicate groups</div>
+      <div class="stat-card__value">{{ stats?.duplicateGroups }}</div>
+      <div class="stat-card__hint">Grouped by tax ID + fuzzy name</div>
+    </mat-card>
+  </div>
+
+  <div class="two-col">
+    <div class="card panel">
+      <div class="panel__title">Operational watchlist</div>
+      <ul class="list">
+        <li>Escalate vendors scoring high risk and open invoices.</li>
+        <li>Validate duplicate pairs before month-end close.</li>
+        <li>Cross-check ERP metadata before enabling payments.</li>
+      </ul>
+    </div>
+    <div class="card panel">
+      <div class="panel__title">Next data drop</div>
+      <p>Mock feed auto-refreshes on page load. Backend hook will deliver hourly deltas.</p>
+      <div class="pill pill--muted soft-pill">Snowflake adapter in progress</div>
+    </div>
+  </div>
+
+  <div class="chart-pair">
+    <mat-card class="chart-card">
+      <div class="panel__title">ERP spend mix (mock)</div>
+      <div class="donut-3d">
+        <div class="donut-3d__pie" [style.background]="spendDonutStyle"></div>
+        <div class="donut-3d__legend">
+          <div class="legend-row" *ngFor="let s of spendByERP; let i = index">
+            <span class="legend-swatch" [style.background]="['#2f9d62','#5b8def','#f9a825','#ef6c00'][i % 4]"></span>
+            <span class="legend-label">{{ s.erp }}</span>
+            <span class="legend-value">{{ s.amount | currency:'USD':'symbol':'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="panel__title">Risk split</div>
+      <div class="columns-3d">
+        <div class="column-3d" *ngFor="let r of riskDistribution; let i = index">
+          <div
+            class="column-3d__bar"
+            [style.height.%]="(r.count / (stats?.totalVendors || 1)) * 100"
+            [style.background]="['linear-gradient(180deg,#5b8def,#2f55a4)','linear-gradient(180deg,#f9a825,#d17c00)','linear-gradient(180deg,#2f9d62,#1f6e45)'][i % 3]"
+          >
+            <div class="column-3d__top"></div>
+          </div>
+          <div class="column-3d__label">{{ r.bucket }}</div>
+          <div class="column-3d__value">{{ r.count }}</div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <p class="hint">*All values are mock-only placeholders until live backend is connected.</p>
+</div>

@@ -1,1 +1,79 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+:root {
+  --surface: #ffffff;
+  --surface-strong: #f5f7fb;
+  --card: #ffffff;
+  --card-border: #e1e7f0;
+  --text-primary: #0f1c35;
+  --text-muted: #51607d;
+  --accent: #2f9d62;
+  --accent-2: #15b892;
+  --warn: #d17c00;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: 700;
+}
+
+p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(15, 28, 53, 0.08);
+}
+
+/* High-contrast defaults for Angular Material tables */
+.mat-mdc-table {
+  color: var(--text-primary);
+  background: #ffffff;
+}
+
+.mat-mdc-header-cell {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.mat-mdc-row:hover {
+  background: #f3f6fb;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 28px;
+  }
+  h2 {
+    font-size: 22px;
+  }
+  .card {
+    padding: 12px;
+  }
+}

@@ -1,0 +1,56 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">Governance</p>
+      <h2>Roles, risks, and recommendations</h2>
+      <p class="lede">Ownership, mitigations, and team model from the proposal.</p>
+    </div>
+    <button mat-stroked-button color="primary" (click)="exportCsv()">
+      <mat-icon>file_download</mat-icon>
+      Export
+    </button>
+    <button mat-stroked-button color="primary" (click)="exportExcel()">
+      <mat-icon>file_download</mat-icon>
+      Excel
+    </button>
+  </div>
+
+  <mat-card class="card-block">
+    <h3>Roles & responsibilities</h3>
+    <ul>
+      <li><strong>Project Sponsor (Exec):</strong> Budget approval, strategic alignment.</li>
+      <li><strong>Product Owner (Audit Governance):</strong> Define scope, prioritize features.</li>
+      <li><strong>Project Manager (Ops):</strong> Schedule tracking, risk management.</li>
+      <li><strong>Solution Architect (Data Platform):</strong> System design & Snowflake schema.</li>
+      <li><strong>Backend Engineers (Data Eng):</strong> APIs and duplicate logic.</li>
+      <li><strong>Frontend Developer (Internal Tools):</strong> UI and dashboards.</li>
+      <li><strong>QA/Testing:</strong> Validate data, performance, UI.</li>
+      <li><strong>Security Officer (IT/Security):</strong> Access control, data masking.</li>
+      <li><strong>End Users (Pilot Audit):</strong> Test, review, validate functionality.</li>
+    </ul>
+  </mat-card>
+
+  <mat-card class="card-block">
+    <h3>Risks & mitigations</h3>
+    <ul>
+      <li><strong>Limited manpower:</strong> Hire contractual specialists.</li>
+      <li><strong>ERP variations:</strong> Standardized staging templates.</li>
+      <li><strong>Performance challenges:</strong> Snowflake clustering and caching.</li>
+      <li><strong>Security compliance:</strong> Data masking & role-based policies.</li>
+      <li><strong>Adoption reluctance:</strong> Training and change management.</li>
+    </ul>
+  </mat-card>
+
+  <mat-card class="card-block">
+    <h3>Team recommendation</h3>
+    <p>Engage a contractual team to deliver on time while core audit teams stay focused.</p>
+    <ul>
+      <li>Snowflake Data Engineer (4–6 months) – schemas/pipelines (CUR_VM/CUR_AP).</li>
+      <li>Backend API Developer (4 months) – REST APIs and integrations.</li>
+      <li>Frontend Developer (4 months) – portal UI.</li>
+      <li>QA/Test Automation (3 months) – validate data and performance.</li>
+      <li>UX Designer (part-time, 1–2 months) – audit-friendly UI.</li>
+    </ul>
+    <p class="lede">Hire from the Indian subcontinent to optimize cost; plan knowledge transfer to Bedrock team post-launch.</p>
+  </mat-card>
+</div>

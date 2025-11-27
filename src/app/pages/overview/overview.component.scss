@@ -1,0 +1,35 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lede {
+  color: var(--text-muted);
+}
+
+.card-block {
+  border: 1px solid var(--card-border);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.quote {
+  font-style: italic;
+  color: var(--text-primary);
+}

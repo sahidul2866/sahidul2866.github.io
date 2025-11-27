@@ -1,0 +1,45 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">Data quality</p>
+      <h2>Duplicate vendor groups</h2>
+      <p class="lede">Fuzzy match confidence and ERP overlap across the mock dataset.</p>
+    </div>
+    <div class="actions">
+      <span class="pill pill--muted">Review before merging</span>
+      <button mat-stroked-button color="primary" (click)="exportCsv()">
+        <mat-icon>file_download</mat-icon>
+        Export
+      </button>
+      <button mat-stroked-button color="primary" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon>
+        Excel
+      </button>
+    </div>
+  </div>
+
+  <div class="group-grid">
+    <div *ngFor="let g of groups" class="card group-card">
+      <div class="group-card__head">
+        <div>
+          <p class="eyebrow">Group #{{ g.groupId }}</p>
+          <h3>{{ g.confidence | percent:'1.0-0' }} confidence</h3>
+          <p>{{ g.reason }}</p>
+        </div>
+        <div class="confidence">
+          <div class="confidence__bar" [style.width.%]="g.confidence * 100"></div>
+        </div>
+      </div>
+      <div class="group-card__body">
+        <div *ngFor="let v of g.vendors" class="vendor-chip">
+          <div class="vendor-chip__name">{{ v.name }}</div>
+          <div class="vendor-chip__meta">
+            <span>ERP: {{ v.erpSource }}</span>
+            <span>Risk: {{ v.riskScore }}</span>
+            <span>Dup: {{ v.duplicateProbability | percent:'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

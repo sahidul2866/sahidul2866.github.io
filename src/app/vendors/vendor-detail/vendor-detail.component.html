@@ -1,0 +1,147 @@
+<div class="page">
+  <button mat-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    Back to Vendors
+  </button>
+
+  <ng-container *ngIf="vendor; else notFound">
+    <div class="hero card">
+      <div>
+        <p class="eyebrow">Vendor profile</p>
+        <h2>{{ vendor.name }}</h2>
+        <p class="lede">ERP: {{ vendor.erpSource }} | Tax ID: {{ vendor.taxId || 'N/A' }}</p>
+        <span class="pill pill--muted">{{ vendor.status }}</span>
+      </div>
+      <div class="hero__badges">
+        <div class="pill pill--muted">
+          <mat-icon>trending_up</mat-icon>
+          Risk {{ vendor.riskScore }} / 100
+        </div>
+        <div class="pill pill--muted">
+          <mat-icon>content_copy</mat-icon>
+          Dup prob: {{ vendor.duplicateProbability | percent:'1.0-0' }}
+        </div>
+        <div class="pill" [class.pill--success]="vendor.hasOpenInvoices" [class.pill--muted]="!vendor.hasOpenInvoices">
+          <mat-icon>{{ vendor.hasOpenInvoices ? 'receipt_long' : 'task_alt' }}</mat-icon>
+          {{ vendor.hasOpenInvoices ? 'Open invoices present' : 'No open invoices' }}
+        </div>
+      </div>
+    </div>
+
+    <div class="vendor-grid">
+      <mat-card class="mini-card">
+        <div class="mini-card__label">FY2025 spend</div>
+        <div class="mini-card__value">{{ vendor.totalSpendFY2025 | currency:'USD':'symbol':'1.0-0' }}</div>
+      </mat-card>
+
+      <mat-card class="mini-card">
+        <div class="mini-card__label">Total spend (all time)</div>
+        <div class="mini-card__value">{{ vendor.totalSpendAllTime | currency:'USD':'symbol':'1.0-0' }}</div>
+      </mat-card>
+
+      <mat-card class="mini-card">
+        <div class="mini-card__label">Risk score</div>
+        <div class="mini-card__value">{{ vendor.riskScore }} / 100</div>
+      </mat-card>
+
+      <mat-card class="mini-card">
+        <div class="mini-card__label">Duplicate probability</div>
+        <div class="mini-card__value">{{ vendor.duplicateProbability | percent:'1.0-0' }}</div>
+      </mat-card>
+    </div>
+
+    <div class="card highlight" *ngIf="highestInvoice">
+      <div>
+        <p class="eyebrow">Top invoice</p>
+        <h3>{{ highestInvoice.invoiceNumber }} — {{ highestInvoice.amount | currency:'USD':'symbol':'1.0-0' }}</h3>
+        <p>GL: {{ highestInvoice.glAccount }} • FY {{ highestInvoice.fiscalYear }} • {{ highestInvoice.invoiceDate | date }}</p>
+      </div>
+      <span class="pill pill--muted">Monitor for approval</span>
+    </div>
+
+    <div class="table-card card">
+      <div class="table-card__header">
+        <div>
+          <p class="eyebrow">AP Transactions (Mock)</p>
+          <h3>Invoice history</h3>
+        </div>
+        <span class="pill pill--muted">Demo only</span>
+      </div>
+
+      <div class="table-container" *ngIf="apTransactions.length; else noTx">
+        <table mat-table [dataSource]="apTransactions">
+
+          <ng-container matColumnDef="invoiceNumber">
+            <th mat-header-cell *matHeaderCellDef>Invoice #</th>
+            <td mat-cell *matCellDef="let tx">{{ tx.invoiceNumber }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="invoiceDate">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let tx">{{ tx.invoiceDate | date }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef>Amount</th>
+            <td mat-cell *matCellDef="let tx">
+              {{ tx.amount | currency:'USD':'symbol':'1.0-0' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="fiscalYear">
+            <th mat-header-cell *matHeaderCellDef>FY</th>
+            <td mat-cell *matCellDef="let tx">{{ tx.fiscalYear }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="glAccount">
+            <th mat-header-cell *matHeaderCellDef>GL Account</th>
+            <td mat-cell *matCellDef="let tx">{{ tx.glAccount }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let tx">{{ tx.status }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['invoiceNumber','invoiceDate','amount','fiscalYear','glAccount','status']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['invoiceNumber','invoiceDate','amount','fiscalYear','glAccount','status'];"></tr>
+
+        </table>
+      </div>
+
+      <ng-template #noTx>
+        <p>No AP transactions found for this vendor in mock data.</p>
+      </ng-template>
+    </div>
+
+    <div class="card notes">
+      <div>
+        <p class="eyebrow">Reviewer notes</p>
+        <h3>Audit commentary</h3>
+        <p class="lede">Captured locally to simulate import/review flow.</p>
+      </div>
+      <div class="note-form">
+        <mat-form-field appearance="outline" class="note-input">
+          <mat-label>Add note</mat-label>
+          <textarea matInput rows="2" [(ngModel)]="newNote" placeholder="Add a reviewer note"></textarea>
+        </mat-form-field>
+        <button mat-stroked-button color="primary" (click)="addNote()">Save note</button>
+      </div>
+      <div class="note-list" *ngIf="reviewerNotes.length; else noNotes">
+        <div class="note" *ngFor="let n of reviewerNotes">
+          <div class="note__meta">{{ n.author }} • {{ n.createdAt }}</div>
+          <div class="note__text">{{ n.note }}</div>
+        </div>
+      </div>
+      <ng-template #noNotes>
+        <p>No notes captured yet.</p>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <ng-template #notFound>
+    <div class="card">
+      <p>Vendor not found.</p>
+    </div>
+  </ng-template>
+</div>

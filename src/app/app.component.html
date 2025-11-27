@@ -1,0 +1,94 @@
+<mat-sidenav-container class="shell">
+  <mat-sidenav class="shell__nav" mode="side" opened>
+    <div class="brand">
+      <div class="brand__mark">VM/AP</div>
+      <div class="brand__meta">
+        <span class="brand__title">Analytics Portal</span>
+        <span class="brand__subtitle">Bedrock Controls</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Overview</div>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/overview" routerLinkActive="active-link">
+          <mat-icon>home</mat-icon>
+          <span>Overview</span>
+        </a>
+        <a mat-list-item routerLink="/features" routerLinkActive="active-link">
+          <mat-icon>layers</mat-icon>
+          <span>Features</span>
+        </a>
+      </mat-nav-list>
+      <a mat-list-item routerLink="/delivery" routerLinkActive="active-link">
+          <mat-icon>timeline</mat-icon>
+          <span>Timeline</span>
+        </a>
+        <a mat-list-item routerLink="/governance" routerLinkActive="active-link">
+          <mat-icon>security</mat-icon>
+          <span>Governance</span>
+        </a>
+        
+      <div class="nav-label">Workstreams</div>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </a>
+        <a mat-list-item routerLink="/vendors" routerLinkActive="active-link">
+          <mat-icon>business</mat-icon>
+          <span>Vendors</span>
+        </a>
+        <a mat-list-item routerLink="/duplicates" routerLinkActive="active-link">
+          <mat-icon>warning_amber</mat-icon>
+          <span>Duplicate Groups</span>
+        </a>
+        <a mat-list-item routerLink="/analytics" routerLinkActive="active-link">
+          <mat-icon>insights</mat-icon>
+          <span>Analytics</span>
+        </a>
+        <a mat-list-item routerLink="/ap-mock" routerLinkActive="active-link">
+          <mat-icon>table_view</mat-icon>
+          <span>AP Mock Data</span>
+        </a>
+        <a mat-list-item routerLink="/ap-history" routerLinkActive="active-link">
+          <mat-icon>history</mat-icon>
+          <span>AP History</span>
+        </a>
+        <a mat-list-item routerLink="/admin" routerLinkActive="active-link">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Admin</span>
+        </a>
+      </mat-nav-list>
+    </div>
+
+    <div class="nav-footnote">
+      <div class="pill pill--muted">Mock data feed</div>
+      <div class="footnote-text">Snowflake backend hooks land later.</div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="shell__content">
+    <mat-toolbar class="topbar">
+      <div class="topbar__title">
+        <span class="eyebrow">Audit command</span>
+        <span class="headline">{{ title }}</span>
+      </div>
+      <span class="spacer"></span>
+      <div class="topbar__meta">
+        <span class="pill pill--success">
+          <mat-icon>bolt</mat-icon>
+          Real-time mock
+        </span>
+        <button mat-button class="user-btn">
+          <mat-icon>account_circle</mat-icon>
+          Auditor (Mock)
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

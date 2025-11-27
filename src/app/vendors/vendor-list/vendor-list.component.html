@@ -1,0 +1,141 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">Vendor oversight</p>
+      <h2>Vendor ledger</h2>
+      <p class="lede">Live mock view of the supplier base to support audit triage.</p>
+    </div>
+    <span class="pill pill--muted">Mock dataset</span>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi__label">FY2025 spend</div>
+      <div class="kpi__value">{{ totalSpend | currency:'USD':'symbol':'1.0-0' }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">Active vendors</div>
+      <div class="kpi__value">{{ activeCount }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">Under review</div>
+      <div class="kpi__value accent-warn">{{ reviewCount }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">Open invoices</div>
+      <div class="kpi__value">{{ openInvoiceCount }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">Average risk</div>
+      <div class="kpi__value">{{ averageRisk }} / 100</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Smart search</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput (keyup)="applyTextFilter($event)" placeholder="Name, ERP, status..." />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-small">
+      <mat-label>ERP</mat-label>
+      <mat-select [(value)]="filters.erp" (selectionChange)="applyFilters()">
+        <mat-option *ngFor="let erp of erpOptions" [value]="erp">{{ erp | titlecase }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-small">
+      <mat-label>Status</mat-label>
+      <mat-select [(value)]="filters.status" (selectionChange)="applyFilters()">
+        <mat-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-small">
+      <mat-label>Min risk</mat-label>
+      <input matInput type="number" min="0" max="100" [(ngModel)]="filters.riskMin" (ngModelChange)="applyFilters()" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-small">
+      <mat-label>Min dup %</mat-label>
+      <input matInput type="number" min="0" max="100" [(ngModel)]="filters.duplicateMin" (ngModelChange)="applyFilters()" />
+    </mat-form-field>
+
+    <mat-slide-toggle color="primary" [(ngModel)]="filters.openOnly" (change)="applyFilters()">Open invoices</mat-slide-toggle>
+
+    <div class="toolbar__actions">
+      <button mat-stroked-button color="primary" (click)="exportCsv()">
+        <mat-icon>file_download</mat-icon>
+        Export CSV
+      </button>
+      <button mat-stroked-button color="primary" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon>
+        Export Excel
+      </button>
+      <button mat-button (click)="resetFilters()">Reset</button>
+    </div>
+  </div>
+
+  <div class="table-container card">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Vendor</th>
+        <td mat-cell *matCellDef="let v">
+          <div class="vendor-name">{{ v.name }}</div>
+          <div class="meta">Tax ID: {{ v.taxId || 'N/A' }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="erpSource">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ERP</th>
+        <td mat-cell *matCellDef="let v">{{ v.erpSource }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalSpendFY2025">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>FY2025 Spend</th>
+        <td mat-cell *matCellDef="let v">
+          {{ v.totalSpendFY2025 | currency:'USD':'symbol':'1.0-0' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="riskScore">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Risk</th>
+        <td mat-cell *matCellDef="let v">
+          <span class="pill pill--muted">{{ v.riskScore }} / 100</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="duplicateProbability">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Dup Prob.</th>
+        <td mat-cell *matCellDef="let v">
+          {{ v.duplicateProbability | percent:'1.0-0' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let v">
+          <span class="status-chip" [ngClass]="v.status.toLowerCase()">
+            {{ v.status }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let v">
+          <button mat-stroked-button color="primary" (click)="openVendor(v)">Open</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
+    </mat-paginator>
+  </div>
+</div>

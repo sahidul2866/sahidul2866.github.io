@@ -1,0 +1,363 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">Signals</p>
+      <h2>Analytics</h2>
+      <p class="lede">Distribution views across spend, risk buckets, and AP aging using the mock data.</p>
+    </div>
+    <div class="header-actions">
+      <span class="pill pill--muted">Static mock feed</span>
+      <button mat-stroked-button color="primary" (click)="exportCsv()">
+        <mat-icon>file_download</mat-icon>
+        Export
+      </button>
+      <button mat-stroked-button color="primary" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon>
+        Excel
+      </button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">ERP mix</p>
+          <h3>Spend by ERP (FY2025)</h3>
+        </div>
+        <span class="pill pill--muted">USD</span>
+      </div>
+      <div class="donut">
+        <svg viewBox="0 0 36 36">
+          <circle class="donut-ring" cx="18" cy="18" r="16"></circle>
+          <ng-container *ngIf="analytics?.spendByERP?.length">
+            <ng-container *ngFor="let s of analytics?.spendByERP; let i = index">
+              <circle
+                class="donut-segment"
+                [attr.stroke-dasharray]="(s.amount / spendMax) * 100 + ' ' + 100"
+                [attr.stroke-dashoffset]="25 + i * 5"
+                [style.stroke]="['#2f9d62','#5b8def','#f9a825'][i % 3]"
+                cx="18" cy="18" r="16"
+              ></circle>
+            </ng-container>
+          </ng-container>
+        </svg>
+        <div class="donut-legend">
+          <div class="legend-row" *ngFor="let s of analytics?.spendByERP; let i = index">
+            <span class="legend-swatch" [style.background]="['#2f9d62','#5b8def','#f9a825'][i % 3]"></span>
+            <span class="legend-label">{{ s.erp }}</span>
+            <span class="legend-value">{{ s.amount | currency:'USD':'symbol':'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Risk profile</p>
+          <h3>Risk distribution</h3>
+        </div>
+      </div>
+      <div class="bars">
+        <div *ngFor="let r of analytics?.riskDistribution" class="bar">
+          <div class="bar__label">{{ r.bucket }}</div>
+          <div class="bar__track bar__track--warn">
+            <div class="bar__fill" [style.width.%]="riskMax ? (r.count / riskMax) * 100 : 0"></div>
+          </div>
+          <div class="bar__value">{{ r.count }}</div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">AP hygiene</p>
+          <h3>AP aging summary</h3>
+        </div>
+      </div>
+      <div class="bars">
+        <div *ngFor="let r of analytics?.agingSummary" class="bar">
+          <div class="bar__label">{{ r.bucket }}</div>
+          <div class="bar__track">
+            <div class="bar__fill" [style.width.%]="agingMax ? (r.count / agingMax) * 100 : 0"></div>
+          </div>
+          <div class="bar__value">{{ r.count }}</div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="grid grid--wide">
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Seasonality</p>
+          <h3>Spend trend (mock)</h3>
+        </div>
+      </div>
+      <div class="line-grid">
+        <div class="line-row" *ngFor="let t of spendTrend">
+          <span class="line-label">{{ t.month }}</span>
+          <div class="line-track">
+            <div class="line-fill" [style.width.%]="(t.amount / spendMax) * 100"></div>
+          </div>
+          <span class="line-value">{{ t.amount | currency:'USD':'symbol':'1.0-0' }}</span>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Risk motion</p>
+          <h3>Risk trend</h3>
+        </div>
+      </div>
+      <div class="stacked-grid">
+        <div class="stacked-row" *ngFor="let r of riskTrend">
+          <span class="line-label">{{ r.month }}</span>
+          <div class="stacked-bars">
+            <div class="stacked high" [style.width.%]="r.highRisk * 5"></div>
+            <div class="stacked med" [style.width.%]="r.mediumRisk * 5"></div>
+          </div>
+          <span class="line-value">H{{ r.highRisk }} / M{{ r.mediumRisk }}</span>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Patterns</p>
+          <h3>Candlestick (mock)</h3>
+        </div>
+      </div>
+      <div class="candles">
+        <div class="candle" *ngFor="let c of candles">
+          <div class="candle__label">{{ c.label }}</div>
+          <div class="candle__body">
+            <div class="wick" [style.top.%]="wickTop(c)" [style.height.%]="wickHeight(c)"></div>
+            <div
+              class="body"
+              [class.body--up]="c.close >= c.open"
+              [class.body--down]="c.close < c.open"
+              [style.top.%]="bodyTop(c)"
+              [style.height.%]="bodyHeight(c)"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Hierarchy</p>
+          <h3>Sunburst (mock)</h3>
+        </div>
+      </div>
+      <div class="sunburst">
+        <div
+          class="sunburst__ring"
+          [style.background]="sunburstGradient"
+        ></div>
+        <div class="sunburst__legend">
+          <div class="legend-row" *ngFor="let s of sunburst">
+            <span class="legend-swatch" [style.background]="s.color"></span>
+            <span class="legend-label">{{ s.label }}</span>
+            <span class="legend-value">{{ s.value }}%</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Movement</p>
+          <h3>Waterfall (mock)</h3>
+        </div>
+      </div>
+      <div class="waterfall">
+        <div class="waterfall__bar" *ngFor="let w of waterfall">
+          <div class="waterfall__label">{{ w.label }}</div>
+          <div
+            class="waterfall__column"
+            [class.waterfall__column--pos]="w.value >= 0"
+            [class.waterfall__column--neg]="w.value < 0"
+            [style.height.%]="waterfallHeight(w)"
+          ></div>
+          <div class="waterfall__value">{{ w.value | currency:'USD':'symbol':'1.0-0' }}</div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Gauge</p>
+          <h3>Risk gauge (mock)</h3>
+        </div>
+      </div>
+      <div class="gauge">
+        <div class="gauge__arc">
+          <div class="gauge__fill" style="transform: rotate(70deg);"></div>
+          <div class="gauge__mask"></div>
+          <div class="gauge__center">
+            <div class="gauge__value">70%</div>
+            <div class="gauge__sub">Risk posture</div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Executive lens</p>
+          <h3>Top vendors</h3>
+        </div>
+      </div>
+      <div class="bars">
+        <div class="bar" *ngFor="let v of topVendors">
+          <div class="bar__label">{{ v.name }}</div>
+          <div class="bar__track">
+            <div class="bar__fill" [style.width.%]="(v.totalSpendFY2025 / topVendors[0].totalSpendFY2025) * 100"></div>
+          </div>
+          <div class="bar__value">{{ v.totalSpendFY2025 | currency:'USD':'symbol':'1.0-0' }}</div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Operational hygiene</p>
+          <h3>AP process stats</h3>
+        </div>
+      </div>
+      <div class="kpi-list">
+        <div class="kpi-row">
+          <span>Avg days to pay</span>
+          <strong>{{ processStats?.daysToPay }} days</strong>
+        </div>
+        <div class="kpi-row">
+          <span>Late payment %</span>
+          <strong>{{ processStats?.latePaymentPct }}%</strong>
+        </div>
+        <div class="kpi-row">
+          <span>Reversals</span>
+          <strong>{{ processStats?.reversalCount }}</strong>
+        </div>
+        <div class="kpi-row">
+          <span>Lifecycle (p95)</span>
+          <strong>{{ processStats?.lifecycleStats?.p95 }} days</strong>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Outliers</p>
+          <h3>Anomalies (mock)</h3>
+        </div>
+      </div>
+      <div class="list" *ngIf="anomalies?.length; else noAnoms">
+        <div class="list__item" *ngFor="let a of anomalies">
+          <div>
+            <div class="list__title">{{ a.invoiceNumber }} — {{ a.amount | currency:'USD':'symbol':'1.0-0' }}</div>
+            <div class="list__meta">Vendor {{ a.vendorId }} • {{ a.glAccount }} • {{ a.invoiceDate | date }}</div>
+          </div>
+          <div class="pill pill--muted">{{ a.reason }}</div>
+        </div>
+      </div>
+      <ng-template #noAnoms>
+        <p>No anomalies detected in mock data.</p>
+      </ng-template>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Dupes</p>
+          <h3>Duplicate groups</h3>
+        </div>
+      </div>
+      <div class="list" *ngIf="dupeGroups?.length; else noDupes">
+        <div class="list__item" *ngFor="let g of dupeGroups">
+          <div>
+            <div class="list__title">Group #{{ g.groupId }}</div>
+            <div class="list__meta">{{ g.reason }}</div>
+          </div>
+          <div class="pill pill--muted">{{ g.confidence | percent:'1.0-0' }}</div>
+        </div>
+      </div>
+      <ng-template #noDupes>
+        <p>No duplicate groups detected.</p>
+      </ng-template>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Engagement</p>
+          <h3>Audit activity</h3>
+        </div>
+      </div>
+      <div class="kpi-list">
+        <div class="kpi-row">
+          <span>Reviewed rows</span>
+          <strong>{{ activity?.reviewed }}</strong>
+        </div>
+        <div class="kpi-row">
+          <span>Pending rows</span>
+          <strong>{{ activity?.pending }}</strong>
+        </div>
+        <div class="kpi-row">
+          <span>Comments</span>
+          <strong>{{ activity?.comments }}</strong>
+        </div>
+      </div>
+      <div class="list list--compact">
+        <div class="list__item" *ngFor="let r of activity?.reviewerPerformance">
+          <div class="list__title">{{ r.name }}</div>
+          <div class="list__value">{{ r.items }} items</div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Statistical profile</p>
+          <h3>Spend stats</h3>
+        </div>
+      </div>
+      <div class="kpi-list">
+        <div class="kpi-row">
+          <span>Mean</span>
+          <strong>{{ spendStats?.mean | currency:'USD':'symbol':'1.0-0' }}</strong>
+        </div>
+        <div class="kpi-row">
+          <span>Median</span>
+          <strong>{{ spendStats?.median | currency:'USD':'symbol':'1.0-0' }}</strong>
+        </div>
+        <div class="kpi-row">
+          <span>Variance</span>
+          <strong>{{ spendStats?.variance | number:'1.0-0' }}</strong>
+        </div>
+        <div class="kpi-row">
+          <span>Std dev</span>
+          <strong>{{ spendStats?.stdDev | currency:'USD':'symbol':'1.0-0' }}</strong>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <p class="hint">
+    These views rely on the mock payload for now. When the backend lands, they will light up with Snowflake-sourced deltas and model-driven anomaly detection.
+  </p>
+</div>

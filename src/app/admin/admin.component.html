@@ -1,0 +1,86 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">Admin</p>
+      <h2>Snowflake operations</h2>
+      <p class="lede">Trigger mock ingestion, run procedures, and stage CSV/Excel uploads.</p>
+    </div>
+    <span class="pill pill--muted">Mock controls (no backend wired)</span>
+  </div>
+
+  <div class="grid">
+    <mat-card class="card-block">
+      <div class="block-header">
+        <h3>Data ingestion</h3>
+        <button mat-stroked-button color="primary" (click)="runIngestion()">
+          <mat-icon>play_arrow</mat-icon>
+          Run
+        </button>
+      </div>
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Pipeline target</mat-label>
+        <mat-select [(value)]="ingestionTarget">
+          <mat-option *ngFor="let p of pipelines" [value]="p">{{ p }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p class="hint">Triggers a mock pipeline; wire this to Snowflake tasks or Airflow in production.</p>
+    </mat-card>
+
+    <mat-card class="card-block">
+      <div class="block-header">
+        <h3>Procedures</h3>
+        <button mat-stroked-button color="primary" (click)="runProcedure()">
+          <mat-icon>play_arrow</mat-icon>
+          Execute
+        </button>
+      </div>
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Procedure name</mat-label>
+        <input matInput [(ngModel)]="procedureName" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Parameters</mat-label>
+        <input matInput [(ngModel)]="procedureParams" />
+      </mat-form-field>
+      <p class="hint">Use Snowflake syntax, e.g., CALL SP_REFRESH_DUPES();</p>
+    </mat-card>
+
+    <mat-card class="card-block">
+      <div class="block-header">
+        <h3>Upload CSV / Excel</h3>
+        <button mat-stroked-button color="primary" (click)="uploadToSnowflake()">
+          <mat-icon>cloud_upload</mat-icon>
+          Upload
+        </button>
+      </div>
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Target table/stage</mat-label>
+        <mat-select [(value)]="uploadTable">
+          <mat-option *ngFor="let t of tables" [value]="t">{{ t }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <label class="file-input">
+        <input type="file" accept=".csv,.xlsx,.xls" (change)="onFileSelected($event)" />
+        <div class="file-chip">
+          <mat-icon>attach_file</mat-icon>
+          <span>{{ uploadFile?.name || 'Choose CSV/Excel' }}</span>
+        </div>
+      </label>
+      <p class="hint">Mock upload; wire to Snowflake PUT/COPY or Snowpipe for production.</p>
+    </mat-card>
+  </div>
+
+  <mat-card class="card-block logs">
+    <div class="block-header">
+      <h3>Activity log</h3>
+    </div>
+    <div class="log-list">
+      <div class="log" *ngFor="let l of logs">
+        <span class="time">{{ l.time }}</span>
+        <span class="badge" [ngClass]="l.type">{{ l.type }}</span>
+        <span class="msg">{{ l.message }}</span>
+      </div>
+      <div *ngIf="!logs.length" class="hint">No actions yet.</div>
+    </div>
+  </mat-card>
+</div>

@@ -1,0 +1,53 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">Delivery</p>
+      <h2>Timeline & deliverables</h2>
+      <p class="lede">Phased plan, deliverables, and success metrics from the proposal.</p>
+    </div>
+    <button mat-stroked-button color="primary" (click)="exportCsv()">
+      <mat-icon>file_download</mat-icon>
+      Export
+    </button>
+    <button mat-stroked-button color="primary" (click)="exportExcel()">
+      <mat-icon>file_download</mat-icon>
+      Excel
+    </button>
+  </div>
+
+  <mat-card class="card-block">
+    <h3>Proposed timeline (MVP ~6 months)</h3>
+    <ul>
+      <li><strong>Phase 1 – Discovery & Design (3w):</strong> Requirements, UI mockups.</li>
+      <li><strong>Phase 2 – Data Foundation (4w):</strong> Snowflake schemas, ingestion setup.</li>
+      <li><strong>Phase 3 – API & Duplicate Engine (5w):</strong> Core logic and endpoints.</li>
+      <li><strong>Phase 4 – Frontend MVP (4w):</strong> Vendor/AP dashboards, filters, exports.</li>
+      <li><strong>Phase 5 – Security Setup (2w):</strong> SSO, masking, role-based access.</li>
+      <li><strong>Phase 6 – Pilot & QA (3w):</strong> Testing, feedback, refinements.</li>
+      <li><strong>Phase 7 – Launch & Training (2w):</strong> Rollout, docs, training.</li>
+      <li><strong>Phase 8 – Continuous Improvement:</strong> Enhancements, predictive features.</li>
+    </ul>
+  </mat-card>
+
+  <mat-card class="card-block">
+    <h3>Expected deliverables</h3>
+    <ul>
+      <li>Unified VM/AP schema in Snowflake (CUR_VM, CUR_AP, DUP tables).</li>
+      <li>Web portal with dashboards, filters, export/import options.</li>
+      <li>Integrated duplicate detection and history lookup.</li>
+      <li>Role-based security with full audit logs.</li>
+      <li>Documentation and user training materials.</li>
+    </ul>
+  </mat-card>
+
+  <mat-card class="card-block">
+    <h3>Success metrics</h3>
+    <ul>
+      <li>Audit turnaround time: 60% faster than current Excel process.</li>
+      <li>Duplicate detection accuracy: ≥95% precision.</li>
+      <li>User adoption rate: ≥90% within 1 month.</li>
+      <li>Query response time: &lt;2 seconds (95th percentile).</li>
+      <li>Security breaches: 0.</li>
+    </ul>
+  </mat-card>
+</div>

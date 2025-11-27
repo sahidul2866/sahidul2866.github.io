@@ -1,0 +1,26 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lede {
+  color: var(--text-muted);
+}
+
+.card-block {
+  border: 1px solid var(--card-border);
+}
+
+ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}

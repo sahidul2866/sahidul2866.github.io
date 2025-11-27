@@ -1,0 +1,67 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">Capabilities</p>
+      <h2>Features & dashboards</h2>
+      <p class="lede">Core features, advanced analytics, and ML-enhanced options from the proposal.</p>
+    </div>
+    <button mat-stroked-button color="primary" (click)="exportCsv()">
+      <mat-icon>file_download</mat-icon>
+      Export
+    </button>
+    <button mat-stroked-button color="primary" (click)="exportExcel()">
+      <mat-icon>file_download</mat-icon>
+      Excel
+    </button>
+  </div>
+
+  <mat-card class="card-block">
+    <h3>Core features</h3>
+    <ul>
+      <li>Duplicate detection by tax ID, name, address, email.</li>
+      <li>Vendor & AP history (invoices, payments, reviews) across fiscal years.</li>
+      <li>KPIs: total spend, vendors with no spend, excluded vendors.</li>
+      <li>Advanced filtering/sorting by ERP, FY, vendor group, spend.</li>
+      <li>Server-side pagination for large datasets.</li>
+      <li>Export to Excel/CSV; import reviewer notes.</li>
+      <li>Security & roles with SSO and row-level access.</li>
+      <li>Audit trail for reviews/changes; scalable to new ERPs.</li>
+    </ul>
+  </mat-card>
+
+  <mat-card class="card-block">
+    <h3>Advanced analytics & stats</h3>
+    <ul>
+      <li>Statistical spend profiling: mean/median/variance/std across vendors/categories/ERPs/FYs.</li>
+      <li>Anomaly & outlier detection (IQR, Z-score + ML) for invoice amounts, payment frequency, duplicate payments.</li>
+      <li>Vendor risk scoring: missing tax ID, inconsistent names, bank mismatches, reversals, duplicate likelihood.</li>
+      <li>Payment pattern analysis: unusual terms, same-day/recurring/split payments.</li>
+      <li>GL-level trends & variance; aging buckets 0–30/31–60/61–90/90+.</li>
+      <li>Spend seasonality and invoice–payment lifecycle stats (avg days to pay, late/early, credit memos).</li>
+      <li>User activity analytics for reviewer productivity and audit traceability.</li>
+    </ul>
+  </mat-card>
+
+  <mat-card class="card-block">
+    <h3>ML-enhanced options</h3>
+    <ul>
+      <li>ML duplicate vendor detection with embeddings/similarity (≈98% accuracy).</li>
+      <li>AI vendor classification (Gov/Bank/University/Individual/Non-profit/Healthcare, etc.).</li>
+      <li>AI-assisted reason suggestions for exclude/review decisions.</li>
+      <li>Predictive spend forecasting from historical AP.</li>
+      <li>Fraud probability model (addresses, reversals, split invoices).</li>
+      <li>Smart semantic search (“vendors with repeated small invoices”).</li>
+    </ul>
+  </mat-card>
+
+  <mat-card class="card-block">
+    <h3>Executive dashboards</h3>
+    <ul>
+      <li>Spend overview: total spend, top 10 vendors, variance by FY, GL breakdown, ERP-wise spend.</li>
+      <li>Vendor health: risk score, completeness, diversity, duplicate probability, missing fields.</li>
+      <li>AP process: days-to-pay, late %, reversals, credit memos, invoice lifecycle.</li>
+      <li>Audit activity: reviewed/pending rows, comments, reviewer performance.</li>
+      <li>Duplicate analysis: grouped vendors, top risky groups, false positives, exclusions.</li>
+    </ul>
+  </mat-card>
+</div>

@@ -1,0 +1,175 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">AP sample</p>
+      <h2>Mock AP data review</h2>
+      <p class="lede">Sortable, filterable grid with export — to showcase the portal experience pre-backend.</p>
+    </div>
+    <div class="actions">
+      <button mat-stroked-button color="primary" (click)="exportCsv()">
+        <mat-icon>file_download</mat-icon>
+        Export CSV
+      </button>
+      <button mat-stroked-button color="primary" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon>
+        Export Excel
+      </button>
+      <button mat-button (click)="resetFilters()">Reset filters</button>
+    </div>
+  </div>
+
+  <mat-card class="controls">
+    <div class="control-row">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Smart search</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput (keyup)="applyTextFilter($event)" placeholder="Vendor, invoice, PO, match #" />
+      </mat-form-field>
+      <div class="control-actions">
+        <mat-slide-toggle color="primary" [(ngModel)]="filters.dupeOnly" (change)="applyFilters()">
+          Show potential dupes
+        </mat-slide-toggle>
+      </div>
+    </div>
+
+    <div class="control-row">
+      <mat-form-field appearance="outline" class="filter-small">
+        <mat-label>Currency</mat-label>
+        <mat-select [(value)]="filters.currency" (selectionChange)="applyFilters()">
+          <mat-option *ngFor="let c of currencyOptions" [value]="c">{{ c | uppercase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-small">
+        <mat-label>FY</mat-label>
+        <mat-select [(value)]="filters.fy" (selectionChange)="applyFilters()">
+          <mat-option *ngFor="let fy of fyOptions" [value]="fy">{{ fy }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-medium">
+        <mat-label>Payment status</mat-label>
+        <mat-select [(value)]="filters.paymentStatus" (selectionChange)="applyFilters()">
+          <mat-option *ngFor="let s of paymentStatusOptions" [value]="s">{{ s }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-card>
+
+  <div class="table-container card">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="DataSource">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>DataSource</th>
+        <td mat-cell *matCellDef="let r">{{ r.DataSource }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="VndNum">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Vendor #</th>
+        <td mat-cell *matCellDef="let r">{{ r.VndNum }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="VndName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Vendor</th>
+        <td mat-cell *matCellDef="let r">
+          <div class="vendor">{{ r.VndName }}</div>
+          <div class="meta">{{ r.SITE_NAME }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="InvNum">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Inv #</th>
+        <td mat-cell *matCellDef="let r">{{ r.InvNum }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="InvDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Inv Date</th>
+        <td mat-cell *matCellDef="let r">{{ r.InvDate | date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="InvAmt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+        <td mat-cell *matCellDef="let r">{{ r.InvAmt | currency:r.CurrCode:'symbol':'1.0-2' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="CurrCode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>CCY</th>
+        <td mat-cell *matCellDef="let r">{{ r.CurrCode }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="FY">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>FY</th>
+        <td mat-cell *matCellDef="let r">{{ r.FY }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="PmtDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pmt Date</th>
+        <td mat-cell *matCellDef="let r">{{ r.PmtDate | date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="PmtAmt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pmt Amt</th>
+        <td mat-cell *matCellDef="let r">{{ r.PmtAmt | currency:r.CurrCode:'symbol':'1.0-2' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="PmtTypeDesc">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pay Type</th>
+        <td mat-cell *matCellDef="let r">{{ r.PmtTypeDesc }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ARIBA_PO">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>PO</th>
+        <td mat-cell *matCellDef="let r">{{ r.ARIBA_PO || '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="INVOICE_SOURCE">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Source</th>
+        <td mat-cell *matCellDef="let r">{{ r.INVOICE_SOURCE }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="PAYMENT_STATUS">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Status</th>
+        <td mat-cell *matCellDef="let r">{{ r.PAYMENT_STATUS }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="DupeX">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Dupe</th>
+        <td mat-cell *matCellDef="let r">
+          <span class="pill" [class.pill--warn]="r.DupeX > 0" [class.pill--muted]="r.DupeX === 0">
+            <mat-icon>{{ r.DupeX > 0 ? 'warning' : 'check_circle' }}</mat-icon>
+            {{ r.DupeX > 0 ? 'Review' : 'Clean' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Decision">
+        <th mat-header-cell *matHeaderCellDef>Decision</th>
+        <td mat-cell *matCellDef="let r">
+          <div class="decision">
+            <span
+              class="decision-pill"
+              [class.decision-pill--accepted]="dupeDecisions[r.APID] === 'accepted'"
+              [class.decision-pill--declined]="dupeDecisions[r.APID] === 'declined'"
+            >
+              {{ dupeDecisions[r.APID] === 'pending' ? 'Pending' : (dupeDecisions[r.APID] | titlecase) }}
+            </span>
+            <div class="decision__actions" *ngIf="r.DupeX > 0">
+              <button mat-stroked-button color="warn" (click)="setDecision(r, 'accepted')">Accept</button>
+              <button mat-button (click)="setDecision(r, 'declined')">Decline</button>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="APID">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>APID</th>
+        <td mat-cell *matCellDef="let r">{{ r.APID }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="rowClasses(row)"></tr>
+    </table>
+
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]"></mat-paginator>
+  </div>
+</div>
