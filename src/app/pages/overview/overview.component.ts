@@ -15,7 +15,8 @@ export class OverviewComponent {
   exportCsv() {
     const lines = [
       'Section,Detail',
-      'Purpose,"Replace manual Excel-based VM/AP with Snowflake portal; instant duplicates, historical spend, audit-ready reports."'
+      'Purpose,"Replace manual Excel-based VM/AP with Snowflake portal; instant duplicates, historical spend, audit-ready reports."',
+      'Master Vendor Repository,"Global vendor identities validated across clients; auto-mapping; standardized details; faster onboarding and consistent reporting."'
     ];
     this.download(lines, 'overview.csv');
   }
@@ -23,7 +24,8 @@ export class OverviewComponent {
   exportExcel() {
     const lines = [
       'Section,Detail',
-      'Purpose,"Replace manual Excel-based VM/AP with Snowflake portal; instant duplicates, historical spend, audit-ready reports."'
+      'Purpose,"Replace manual Excel-based VM/AP with Snowflake portal; instant duplicates, historical spend, audit-ready reports."',
+      'Master Vendor Repository,"Global vendor identities validated across clients; auto-mapping; standardized details; faster onboarding and consistent reporting."'
     ];
     this.download(lines, 'overview.xlsx');
   }

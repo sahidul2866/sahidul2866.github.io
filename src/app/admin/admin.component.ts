@@ -7,6 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { Company } from '../models/company.model';
+import { MockDataService } from '../services/mock-data.service';
 
 interface AdminLog {
   time: string;
@@ -31,6 +33,8 @@ interface AdminLog {
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent {
+  companies: Company[] = [];
+  selectedCompany: number | 'all' = 'all';
   ingestionTarget = 'CUR_VM';
   procedureName = 'SP_REFRESH_DUPES';
   procedureParams = '();';
@@ -40,6 +44,10 @@ export class AdminComponent {
 
   pipelines = ['CUR_VM', 'CUR_AP', 'DUP_REFRESH'];
   tables = ['CUR_VM', 'CUR_AP', 'DUP_STAGE', 'CUSTOM_STAGE'];
+
+  constructor(private mockData: MockDataService) {
+    this.companies = this.mockData.getCompanies();
+  }
 
   runIngestion() {
     this.addLog(`Triggered ingestion for pipeline ${this.ingestionTarget}`, 'info');
@@ -70,7 +78,9 @@ export class AdminComponent {
 
   private addLog(message: string, type: AdminLog['type']) {
     const time = new Date().toLocaleTimeString();
-    this.logs.unshift({ time, message, type });
+    const company = this.selectedCompany === 'all' ? 'All companies' : this.companies.find(c => c.id === this.selectedCompany)?.name;
+    const scoped = company ? `[${company}] ${message}` : message;
+    this.logs.unshift({ time, message: scoped, type });
     if (this.logs.length > 20) {
       this.logs.pop();
     }

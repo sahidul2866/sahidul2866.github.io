@@ -5,6 +5,13 @@
       <h2>Mock AP data review</h2>
       <p class="lede">Sortable, filterable grid with export — to showcase the portal experience pre-backend.</p>
     </div>
+    <mat-form-field appearance="outline" class="filter-field company-filter">
+      <mat-label>Company</mat-label>
+      <mat-select [(value)]="selectedCompany" (selectionChange)="applyCompanyFilter()">
+        <mat-option value="all">All companies</mat-option>
+        <mat-option *ngFor="let c of companies" [value]="c.id">{{ c.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <div class="actions">
       <button mat-stroked-button color="primary" (click)="exportCsv()">
         <mat-icon>file_download</mat-icon>

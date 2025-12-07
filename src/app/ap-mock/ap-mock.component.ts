@@ -12,6 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { ApMockRecord } from '../models/ap-mock-record.model';
+import { Company } from '../models/company.model';
 import { MockDataService } from '../services/mock-data.service';
 
 @Component({
@@ -67,6 +68,8 @@ export class ApMockComponent implements OnInit, AfterViewInit {
     dupeOnly: false
   };
 
+  companies: Company[] = [];
+  selectedCompany: 'all' | number = 'all';
   currencyOptions: string[] = [];
   fyOptions: string[] = [];
   paymentStatusOptions: string[] = [];
@@ -75,16 +78,9 @@ export class ApMockComponent implements OnInit, AfterViewInit {
   constructor(private mockData: MockDataService) {}
 
   ngOnInit(): void {
-    const data = this.mockData.getApMockData();
-    this.dataSource.data = data;
+    this.companies = this.mockData.getCompanies();
     this.dataSource.filterPredicate = (row, json) => this.matches(row, json);
-    this.currencyOptions = ['all', ...new Set(data.map(d => d.CurrCode))];
-    this.fyOptions = ['all', ...new Set(data.map(d => d.FY.toString()))];
-    this.paymentStatusOptions = ['all', ...new Set(data.map(d => d.PAYMENT_STATUS || 'Unknown'))];
-    data.forEach(r => {
-      this.dupeDecisions[r.APID] = 'pending';
-    });
-    this.applyFilters();
+    this.loadData();
   }
 
   ngAfterViewInit(): void {
@@ -104,6 +100,10 @@ export class ApMockComponent implements OnInit, AfterViewInit {
   resetFilters() {
     this.filters = { search: '', currency: 'all', fy: 'all', paymentStatus: 'all', dupeOnly: false };
     this.applyFilters();
+  }
+
+  applyCompanyFilter() {
+    this.loadData();
   }
 
   setDecision(row: ApMockRecord, decision: 'accepted' | 'declined') {
@@ -153,5 +153,20 @@ export class ApMockComponent implements OnInit, AfterViewInit {
     link.download = filename;
     link.click();
     URL.revokeObjectURL(link.href);
+  }
+
+  private loadData() {
+    const companyId = this.selectedCompany === 'all' ? undefined : this.selectedCompany;
+    const data = this.mockData.getApMockData(companyId);
+    this.dataSource.data = data;
+    this.currencyOptions = ['all', ...new Set(data.map(d => d.CurrCode))];
+    this.fyOptions = ['all', ...new Set(data.map(d => d.FY.toString()))];
+    this.paymentStatusOptions = ['all', ...new Set(data.map(d => d.PAYMENT_STATUS || 'Unknown'))];
+    data.forEach(r => {
+      if (!this.dupeDecisions[r.APID]) {
+        this.dupeDecisions[r.APID] = 'pending';
+      }
+    });
+    this.applyFilters();
   }
 }

@@ -15,6 +15,7 @@ import { MockDataService } from '../services/mock-data.service';
 export class DashboardComponent implements OnInit {
 
   stats: any;
+  dupStats: { groups: number; dupVendors: number; potentialRecovery: number; openInvoices: number } | undefined;
   spendByERP: { erp: string; amount: number }[] = [];
   riskDistribution: { bucket: string; count: number }[] = [];
   spendDonutStyle = '';
@@ -23,6 +24,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.stats = this.mockData.getStats();
+    this.dupStats = this.mockData.getDuplicateRecoveryStats();
     const analytics = this.mockData.getAnalytics();
     this.spendByERP = analytics.spendByERP;
     this.riskDistribution = analytics.riskDistribution;
@@ -59,6 +61,11 @@ export class DashboardComponent implements OnInit {
     lines.push(`TotalVendors,${this.stats?.totalVendors ?? ''}`);
     lines.push(`HighRiskVendors,${this.stats?.highRiskVendors ?? ''}`);
     lines.push(`DuplicateGroups,${this.stats?.duplicateGroups ?? ''}`);
+    if (this.dupStats) {
+      lines.push(`DuplicateVendors,${this.dupStats.dupVendors}`);
+      lines.push(`PotentialRecovery,${this.dupStats.potentialRecovery}`);
+      lines.push(`OpenInvoicesInDupeVendors,${this.dupStats.openInvoices}`);
+    }
     lines.push('');
     lines.push('ERP,Amount');
     this.spendByERP.forEach(s => lines.push(`${s.erp},${s.amount}`));

@@ -1,0 +1,105 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">Central Vendor System</p>
+      <h2>Cross-client vendor backbone</h2>
+      <p class="lede">See vendors across companies, spot overlaps, and copy richer profiles to incomplete records.</p>
+    </div>
+    <span class="pill pill--muted">Mock data</span>
+  </div>
+
+  <div class="summary-grid">
+    <mat-card class="summary-card">
+      <p class="summary-label">Clusters with overlaps</p>
+      <h3>{{ groups.length }}</h3>
+      <p class="summary-sub">Vendors appearing in 2+ companies.</p>
+    </mat-card>
+    <mat-card class="summary-card">
+      <p class="summary-label">Top cluster completeness</p>
+      <h3>{{ selectedGroup?.completeness || 0 }}%</h3>
+      <mat-progress-bar *ngIf="selectedGroup" mode="determinate" [value]="selectedGroup.completeness"></mat-progress-bar>
+    </mat-card>
+    <mat-card class="summary-card">
+      <p class="summary-label">Copy helper</p>
+      <h3><mat-icon>auto_fix_high</mat-icon> Fill missing fields</h3>
+      <p class="summary-sub">Copy richer profile into incomplete ones.</p>
+    </mat-card>
+  </div>
+
+  <div class="layout">
+    <div class="group-column">
+      <div class="column-head">
+        <p class="eyebrow">Overlapping vendors</p>
+        <h3>Central clusters</h3>
+      </div>
+      <div class="group-list">
+        <mat-card
+          class="group-card"
+          *ngFor="let group of groups"
+          (click)="selectGroup(group)"
+          [class.is-active]="selectedGroup?.name === group.name">
+          <div class="group-card__title">
+            <h4>{{ group.name }}</h4>
+            <span class="pill pill--muted">{{ group.vendors.length }} companies</span>
+          </div>
+          <p class="group-card__meta">
+            {{ companyNames(group) }}
+          </p>
+          <mat-progress-bar mode="determinate" [value]="group.completeness"></mat-progress-bar>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="detail-column" *ngIf="selectedGroup">
+      <div class="column-head">
+        <p class="eyebrow">Profile completion</p>
+        <h3>{{ selectedGroup.name }} — {{ selectedGroup.vendors.length }} records</h3>
+      </div>
+
+      <div class="vendor-card-grid">
+        <mat-card
+          class="vendor-card"
+          *ngFor="let v of selectedGroup.vendors"
+          [class.is-highlighted]="copiedVendorId === v.id">
+          <div class="vendor-card__head">
+            <div>
+              <p class="eyebrow">{{ companyName(v.companyId) }}</p>
+              <h4>{{ v.name }}</h4>
+              <p class="vendor-meta">{{ v.erpSource }} • Tax ID: {{ v.taxId || '—' }}</p>
+            </div>
+            <button mat-stroked-button color="primary" (click)="copyRicherProfile(v)">
+              <mat-icon>content_copy</mat-icon>
+              Copy richer info here
+            </button>
+          </div>
+          <div class="info-grid">
+            <div>
+              <p class="label">Contact</p>
+              <p>{{ v.contactName || '—' }}</p>
+            </div>
+            <div>
+              <p class="label">Email</p>
+              <p>{{ v.email || '—' }}</p>
+            </div>
+            <div>
+              <p class="label">Phone</p>
+              <p>{{ v.phone || '—' }}</p>
+            </div>
+            <div>
+              <p class="label">Address</p>
+              <p>{{ v.address || '—' }}</p>
+            </div>
+          </div>
+          <div class="card-foot">
+            <span class="pill pill--muted">Spend {{ v.totalSpendFY2025 | currency:'USD':'symbol':'1.0-0' }}</span>
+            <span class="pill pill--muted">Risk {{ v.riskScore }} / 100</span>
+          </div>
+          <div class="copy-toast" *ngIf="copiedVendorId === v.id">
+            <mat-icon>check_circle</mat-icon>
+            Copied richer profile into this vendor
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

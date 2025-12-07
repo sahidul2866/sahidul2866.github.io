@@ -5,7 +5,16 @@
       <h2>Snowflake operations</h2>
       <p class="lede">Trigger mock ingestion, run procedures, and stage CSV/Excel uploads.</p>
     </div>
-    <span class="pill pill--muted">Mock controls (no backend wired)</span>
+    <div class="header-actions">
+      <mat-form-field appearance="outline" class="company-filter">
+        <mat-label>Company</mat-label>
+        <mat-select [(ngModel)]="selectedCompany">
+          <mat-option value="all">All companies</mat-option>
+          <mat-option *ngFor="let c of companies" [value]="c.id">{{ c.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span class="pill pill--muted">Mock controls (no backend wired)</span>
+    </div>
   </div>
 
   <div class="grid">
@@ -69,6 +78,18 @@
       <p class="hint">Mock upload; wire to Snowflake PUT/COPY or Snowpipe for production.</p>
     </mat-card>
   </div>
+
+  <mat-card class="card-block benefits">
+    <h3>Benefits for data teams</h3>
+    <ul>
+      <li>The system auto-detects duplicates and builds vendor masters—no manual scripts needed.</li>
+      <li>Data teams can focus on ingestion, governance, and crafting new duplicate-detection techniques.</li>
+      <li>New rules and outcomes can be folded back into the platform to continuously improve the process.</li>
+      <li>Vendor classification (Individual, Bank, Academic, etc.) is handled automatically—no manual tagging.</li>
+      <li>Data anomalies are detected here, ready for targeted manual review.</li>
+      <li>Vendor enrichment is planned in Phase 2 to auto-augment profiles with external signals.</li>
+    </ul>
+  </mat-card>
 
   <mat-card class="card-block logs">
     <div class="block-header">

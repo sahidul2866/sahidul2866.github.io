@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { ApTransaction } from '../models/ap-transaction.model';
 import { ApMockRecord } from '../models/ap-mock-record.model';
 import { DuplicateGroup } from '../models/duplicate-group.model';
+import { Company } from '../models/company.model';
 import { Vendor } from '../models/vendor.model';
+import { VmSheet } from '../models/vm-sheet.model';
 
 interface ReviewerNote {
   author: string;
@@ -15,11 +17,66 @@ interface ReviewerNote {
 })
 export class MockDataService {
 
+  private vmSheets: VmSheet[] = [];
+
+  private companies: Company[] = [
+    {
+      id: 201,
+      name: 'McCain',
+      region: 'US & Canada',
+      industry: 'Retail & E-commerce',
+      erpSystems: ['SAP', 'Oracle'],
+      vendorCount: 3,
+      annualSpend: 5200000
+    },
+    {
+      id: 202,
+      name: 'Alorica',
+      region: 'US East',
+      industry: 'Business Services',
+      erpSystems: ['NetSuite'],
+      vendorCount: 2,
+      annualSpend: 4300000
+    },
+    {
+      id: 203,
+      name: 'ABM',
+      region: 'US Central',
+      industry: 'Facilities',
+      erpSystems: ['SAP'],
+      vendorCount: 2,
+      annualSpend: 4100000
+    },
+    {
+      id: 204,
+      name: 'Citizens',
+      region: 'US',
+      industry: 'Financial Services',
+      erpSystems: ['Oracle'],
+      vendorCount: 3,
+      annualSpend: 3750000
+    },
+    {
+      id: 205,
+      name: 'Aestella',
+      region: 'EU',
+      industry: 'Professional Services',
+      erpSystems: ['QuickBooks'],
+      vendorCount: 4,
+      annualSpend: 3600000
+    }
+  ];
+
   private vendors: Vendor[] = [
     {
       id: 1,
+      companyId: 202,
       name: 'Alorica Inc.',
       taxId: '12-3456789',
+      address: '100 Pine St, San Francisco, CA',
+      email: 'finance@alorica.com',
+      phone: '+1 415-555-1001',
+      contactName: 'Lisa Chan',
       erpSource: 'NetSuite',
       totalSpendFY2025: 1250000,
       totalSpendAllTime: 7850000,
@@ -30,8 +87,12 @@ export class MockDataService {
     },
     {
       id: 2,
+      companyId: 203,
       name: 'ABM Services LLC',
       taxId: '98-7654321',
+      address: '200 Market St, Chicago, IL',
+      email: 'ap@abmservices.com',
+      phone: '+1 312-555-2200',
       erpSource: 'SAP',
       totalSpendFY2025: 980000,
       totalSpendAllTime: 15200000,
@@ -42,8 +103,11 @@ export class MockDataService {
     },
     {
       id: 3,
+      companyId: 201,
       name: 'TFG Supplies',
       taxId: '45-1112233',
+      email: 'orders@tfgsupplies.com',
+      phone: '+1 512-555-4401',
       erpSource: 'QuickBooks',
       totalSpendFY2025: 310000,
       totalSpendAllTime: 1250000,
@@ -54,8 +118,10 @@ export class MockDataService {
     },
     {
       id: 4,
+      companyId: 205,
       name: 'Northwind Traders',
       taxId: '78-2223344',
+      address: '12 River Rd, Dublin, IE',
       erpSource: 'Oracle',
       totalSpendFY2025: 565000,
       totalSpendAllTime: 3400000,
@@ -66,8 +132,11 @@ export class MockDataService {
     },
     {
       id: 5,
+      companyId: 204,
       name: 'Urban Logistics Co.',
       taxId: '91-5551234',
+      address: '780 Hudson Ave, Newark, NJ',
+      email: 'ops@urbanlogistics.co',
       erpSource: 'SAP',
       totalSpendFY2025: 1780000,
       totalSpendAllTime: 9200000,
@@ -78,8 +147,11 @@ export class MockDataService {
     },
     {
       id: 6,
+      companyId: 205,
       name: 'Brighton University',
       taxId: '81-6655334',
+      address: '1 College Rd, Brighton, MA',
+      contactName: 'Alicia Parker',
       erpSource: 'NetSuite',
       totalSpendFY2025: 220000,
       totalSpendAllTime: 890000,
@@ -90,13 +162,120 @@ export class MockDataService {
     },
     {
       id: 7,
+      companyId: 204,
       name: 'First National Bank',
       taxId: '99-0044221',
+      phone: '+1 212-555-9944',
       erpSource: 'QuickBooks',
       totalSpendFY2025: 430000,
       totalSpendAllTime: 2100000,
       riskScore: 65,
       duplicateProbability: 0.21,
+      hasOpenInvoices: true,
+      status: 'Review'
+    },
+    {
+      id: 8,
+      companyId: 201,
+      name: 'Urban Logistics Co.',
+      taxId: '91-5551234',
+      phone: '+1 973-555-8877',
+      erpSource: 'QuickBooks',
+      totalSpendFY2025: 240000,
+      totalSpendAllTime: 910000,
+      riskScore: 58,
+      duplicateProbability: 0.36,
+      hasOpenInvoices: false,
+      status: 'Active'
+    },
+    {
+      id: 9,
+      companyId: 205,
+      name: 'Alorica Inc.',
+      taxId: '12-3456789',
+      email: 'ap@alorica.com',
+      erpSource: 'NetSuite',
+      totalSpendFY2025: 355000,
+      totalSpendAllTime: 1200000,
+      riskScore: 44,
+      duplicateProbability: 0.41,
+      hasOpenInvoices: true,
+      status: 'Review'
+    },
+    {
+      id: 10,
+      companyId: 203,
+      name: 'Brighton University',
+      taxId: '81-6655334',
+      email: 'finance@brighton.edu',
+      phone: '+44 20 7946 0012',
+      erpSource: 'Oracle',
+      totalSpendFY2025: 125000,
+      totalSpendAllTime: 450000,
+      riskScore: 22,
+      duplicateProbability: 0.12,
+      hasOpenInvoices: false,
+      status: 'Active'
+    },
+    {
+      id: 11,
+      companyId: 204,
+      name: 'Citizens Medical Partners',
+      taxId: '55-8899001',
+      address: '99 Broad St, Boston, MA',
+      email: 'info@citizensmed.com',
+      phone: '+1 617-555-1900',
+      erpSource: 'Oracle',
+      totalSpendFY2025: 290000,
+      totalSpendAllTime: 980000,
+      riskScore: 48,
+      duplicateProbability: 0.18,
+      hasOpenInvoices: true,
+      status: 'Review'
+    },
+    {
+      id: 12,
+      companyId: 205,
+      name: 'Aestella Creative Co.',
+      taxId: '66-2299113',
+      address: '14 Shoreline Ave, Lisbon, PT',
+      email: 'hello@aestella.co',
+      phone: '+351 21 555 1000',
+      erpSource: 'QuickBooks',
+      totalSpendFY2025: 175000,
+      totalSpendAllTime: 620000,
+      riskScore: 31,
+      duplicateProbability: 0.11,
+      hasOpenInvoices: false,
+      status: 'Active'
+    },
+    {
+      id: 13,
+      companyId: 201,
+      name: 'McCain Foods Supply',
+      taxId: '21-5558899',
+      address: '250 Commerce Rd, Denver, CO',
+      email: 'supply@mccainfoods.com',
+      phone: '+1 720-555-4455',
+      erpSource: 'SAP',
+      totalSpendFY2025: 640000,
+      totalSpendAllTime: 2100000,
+      riskScore: 52,
+      duplicateProbability: 0.19,
+      hasOpenInvoices: true,
+      status: 'Active'
+    },
+    {
+      id: 14,
+      companyId: 202,
+      name: 'ABM Services LLC',
+      taxId: '98-7654321',
+      email: 'hq@abmservices.com',
+      erpSource: 'NetSuite',
+      totalSpendFY2025: 510000,
+      totalSpendAllTime: 1670000,
+      riskScore: 39,
+      duplicateProbability: 0.22,
       hasOpenInvoices: true,
       status: 'Review'
     }
@@ -1222,28 +1401,92 @@ export class MockDataService {
 
   constructor() {
     // wire vendors into duplicate group safely after vendors are defined
-    this.duplicateGroups[0].vendors = [this.vendors[0], this.vendors[2]];
-    this.duplicateGroups[1].vendors = [this.vendors[1], this.vendors[5]];
-    this.duplicateGroups[2].vendors = [this.vendors[3], this.vendors[6]];
+    const byName = (name: string) => this.vendors.filter(v => v.name === name);
+    this.duplicateGroups[0].vendors = byName('Alorica Inc.');
+    this.duplicateGroups[1].vendors = byName('ABM Services LLC');
+    this.duplicateGroups[2].vendors = byName('Urban Logistics Co.');
     this.reviewerNotes[1] = [
       { author: 'Auditor A', note: 'Validate tax ID vs W9 before payment.', createdAt: '2025-03-03' }
     ];
+    // distribute AP mock records across companies for filtering
+    let i = 0;
+    this.apMock = this.apMock.map(r => ({
+      ...r,
+      companyId: this.companies[i++ % this.companies.length].id
+    }));
+    this.vmSheets = this.buildVmSheets();
+  }
+
+  getCompanies(): Company[] {
+    return this.companies;
+  }
+
+  getCompanyById(id: number): Company | undefined {
+    return this.companies.find(c => c.id === id);
   }
 
   getVendors(): Vendor[] {
     return this.vendors;
   }
 
+  getVendorsByCompany(companyId: number): Vendor[] {
+    return this.vendors.filter(v => v.companyId === companyId);
+  }
+
   getVendorById(id: number): Vendor | undefined {
     return this.vendors.find(v => v.id === id);
+  }
+
+  updateVendor(partial: Partial<Vendor> & { id: number }): Vendor | undefined {
+    const idx = this.vendors.findIndex(v => v.id === partial.id);
+    if (idx === -1) return undefined;
+    this.vendors[idx] = { ...this.vendors[idx], ...partial };
+    return this.vendors[idx];
+  }
+
+  getCentralVendorGroups(): { name: string; vendors: Vendor[] }[] {
+    const groups: Record<string, Vendor[]> = {};
+    this.vendors.forEach(v => {
+      const key = v.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(v);
+    });
+    return Object.keys(groups)
+      .map(key => ({
+        name: groups[key][0].name,
+        vendors: groups[key]
+      }))
+      .filter(g => g.vendors.length > 1);
   }
 
   getApTransactionsForVendor(vendorId: number): ApTransaction[] {
     return this.apTransactions.filter(tx => tx.vendorId === vendorId);
   }
 
-  getDuplicateGroups(): DuplicateGroup[] {
-    return this.duplicateGroups;
+  getApMockData(companyId?: number): ApMockRecord[] {
+    if (!companyId) return this.apMock;
+    return this.apMock.filter(r => r.companyId === companyId);
+  }
+
+  getDuplicateGroups(companyId?: number): DuplicateGroup[] {
+    const base = this.duplicateGroups.map(g => ({ ...g, vendors: [...g.vendors] }));
+    if (!companyId) {
+      return base;
+    }
+    return base
+      .map(g => ({ ...g, vendors: g.vendors.filter(v => v.companyId === companyId) }))
+      .filter(g => g.vendors.length > 1);
+  }
+
+  keepOnlyVendorInGroup(groupId: number, vendorId: number): { group: DuplicateGroup; mergeSummary?: any } | undefined {
+    const idx = this.duplicateGroups.findIndex(g => g.groupId === groupId);
+    if (idx === -1) return undefined;
+    const keep = this.duplicateGroups[idx].vendors.find(v => v.id === vendorId);
+    if (!keep) return undefined;
+    const toMerge = this.duplicateGroups[idx].vendors.filter(v => v.id !== vendorId).map(v => v.id);
+    const mergeSummary = this.mergeVendors(keep.id, toMerge);
+    this.duplicateGroups[idx] = { ...this.duplicateGroups[idx], vendors: [keep] };
+    return { group: this.duplicateGroups[idx], mergeSummary };
   }
 
   getReviewerNotes(vendorId: number): ReviewerNote[] {
@@ -1276,24 +1519,397 @@ export class MockDataService {
     };
   }
 
-  getAnalytics() {
-    const spendByERP = this.aggregateSpendByErp();
+  getDuplicateRecoveryStats() {
+    const dupVendorIds = new Set<number>();
+    this.duplicateGroups.forEach(g => g.vendors.forEach(v => dupVendorIds.add(v.id)));
+    const dupTx = this.apTransactions.filter(tx => dupVendorIds.has(tx.vendorId));
+    const potentialRecovery = dupTx.reduce((sum, tx) => sum + tx.amount, 0);
+    const openInvoices = dupTx.filter(tx => tx.status === 'Open').length;
+    const totalDupVendors = Array.from(dupVendorIds).length;
+    return {
+      groups: this.duplicateGroups.length,
+      dupVendors: totalDupVendors,
+      potentialRecovery,
+      openInvoices
+    };
+  }
+
+  getVmSheets(): VmSheet[] {
+    return this.vmSheets;
+  }
+
+  private buildVmSheets(): VmSheet[] {
+    const headers = [
+      'ExcludeReason',
+      'DataSource',
+      'VendorTagConfidence',
+      'Co',
+      'vendor_id',
+      'company_name',
+      'company_name_alt',
+      'parent_vendor_id',
+      'parent_company_name',
+      'tax_id',
+      'TaxIDSource',
+      'TaxIDMatchLogic',
+      'country',
+      'CountrySource',
+      'Data_Quality_Score',
+      'supplier_group',
+      'SupplierGroupSource',
+      'vendor_type',
+      'VendorTypeSource',
+      'VMSupplierID',
+      'vm_supplier_name',
+      'vm_supplier_name_alt',
+      'vm_vendor_type',
+      'vm_tax_id',
+      'vm_country',
+      'vm_Data_Quality_Score',
+      'FY2015_spend',
+      'FY2016_spend',
+      'FY2017_spend',
+      'FY2018_spend',
+      'FY2019_spend',
+      'FY2020_spend',
+      'FY2021_spend',
+      'FY2022_spend',
+      'FY2023_spend',
+      'FY2024_spend',
+      'FY2025_spend',
+      'persistentVendorFlag',
+      'groupbySupplierFlag',
+      'grouping1',
+      'grouping2',
+      'grouping3',
+      'grouping4',
+      'grouping5',
+      'grouping6',
+      'grouping7',
+      'grouping8',
+      'grouping9',
+      'GroupingReason',
+      'GroupId',
+      'Duplicate Total Spend1',
+      'IsHighestSpendInGroup'
+    ];
+
+    const rows: Record<string, any>[] = [
+      {
+        ExcludeReason: null,
+        DataSource: 241008,
+        VendorTagConfidence: null,
+        Co: 'Dropbox INC BU',
+        vendor_id: 'V02381-Dropbox INC BU',
+        company_name: 'Keller Preece PLLC US',
+        company_name_alt: null,
+        parent_vendor_id: null,
+        parent_company_name: null,
+        tax_id: '46-1913568',
+        TaxIDSource: null,
+        TaxIDMatchLogic: null,
+        country: 'US',
+        CountrySource: null,
+        Data_Quality_Score: 0,
+        supplier_group: null,
+        SupplierGroupSource: null,
+        vendor_type: null,
+        VendorTypeSource: null,
+        VMSupplierID: null,
+        vm_supplier_name: null,
+        vm_supplier_name_alt: null,
+        vm_vendor_type: null,
+        vm_tax_id: null,
+        vm_country: null,
+        vm_Data_Quality_Score: 0,
+        FY2015_spend: 551930,
+        FY2016_spend: 593018,
+        FY2017_spend: 564164,
+        FY2018_spend: 551930,
+        FY2019_spend: 635729,
+        FY2020_spend: 598401,
+        FY2021_spend: 527107,
+        FY2022_spend: 523947,
+        FY2023_spend: 561662,
+        FY2024_spend: 651784,
+        FY2025_spend: 607364,
+        persistentVendorFlag: null,
+        groupbySupplierFlag: null,
+        grouping1: null,
+        grouping2: null,
+        grouping3: null,
+        grouping4: null,
+        grouping5: null,
+        grouping6: null,
+        grouping7: null,
+        grouping8: null,
+        grouping9: null,
+        GroupingReason: 'Matched on company_name; Matched on Email',
+        GroupId: 'V02381-Dropbox INC BU',
+        'Duplicate Total Spend1': 6231036.22,
+        IsHighestSpendInGroup: 'Yes'
+      },
+      {
+        ExcludeReason: null,
+        DataSource: 241008,
+        VendorTagConfidence: null,
+        Co: 'Dropbox INC BU',
+        vendor_id: 'V02385-Dropbox INC BU',
+        company_name: 'Monotype Imaging Inc',
+        company_name_alt: null,
+        parent_vendor_id: null,
+        parent_company_name: null,
+        tax_id: '02-0386861',
+        TaxIDSource: null,
+        TaxIDMatchLogic: null,
+        country: 'US',
+        CountrySource: null,
+        Data_Quality_Score: 0,
+        supplier_group: null,
+        SupplierGroupSource: null,
+        vendor_type: null,
+        VendorTypeSource: null,
+        VMSupplierID: null,
+        vm_supplier_name: null,
+        vm_supplier_name_alt: null,
+        vm_vendor_type: null,
+        vm_tax_id: null,
+        vm_country: null,
+        vm_Data_Quality_Score: 0,
+        FY2015_spend: 145302,
+        FY2016_spend: 145302,
+        FY2017_spend: 145302,
+        FY2018_spend: 145302,
+        FY2019_spend: 145302,
+        FY2020_spend: 145302,
+        FY2021_spend: 145302,
+        FY2022_spend: 145302,
+        FY2023_spend: 145302,
+        FY2024_spend: 145302,
+        FY2025_spend: 145302,
+        persistentVendorFlag: null,
+        groupbySupplierFlag: null,
+        grouping1: null,
+        grouping2: null,
+        grouping3: null,
+        grouping4: null,
+        grouping5: null,
+        grouping6: null,
+        grouping7: null,
+        grouping8: null,
+        grouping9: null,
+        GroupingReason: null,
+        GroupId: null,
+        'Duplicate Total Spend1': null,
+        IsHighestSpendInGroup: null
+      },
+      {
+        ExcludeReason: null,
+        DataSource: 241008,
+        VendorTagConfidence: null,
+        Co: 'Dropbox INC BU',
+        vendor_id: 'V02560-Dropbox INC BU',
+        company_name: 'Northland Control Systems Inc',
+        company_name_alt: null,
+        parent_vendor_id: null,
+        parent_company_name: null,
+        tax_id: '94-3031305',
+        TaxIDSource: null,
+        TaxIDMatchLogic: null,
+        country: 'US',
+        CountrySource: null,
+        Data_Quality_Score: 0,
+        supplier_group: null,
+        SupplierGroupSource: null,
+        vendor_type: null,
+        VendorTypeSource: null,
+        VMSupplierID: null,
+        vm_supplier_name: null,
+        vm_supplier_name_alt: null,
+        vm_vendor_type: null,
+        vm_tax_id: null,
+        vm_country: null,
+        vm_Data_Quality_Score: 0,
+        FY2015_spend: 46704,
+        FY2016_spend: 46704,
+        FY2017_spend: 46704,
+        FY2018_spend: 46704,
+        FY2019_spend: 46704,
+        FY2020_spend: 46704,
+        FY2021_spend: 46704,
+        FY2022_spend: 46704,
+        FY2023_spend: 46704,
+        FY2024_spend: 46704,
+        FY2025_spend: 46704,
+        persistentVendorFlag: null,
+        groupbySupplierFlag: null,
+        grouping1: null,
+        grouping2: null,
+        grouping3: null,
+        grouping4: null,
+        grouping5: null,
+        grouping6: null,
+        grouping7: null,
+        grouping8: null,
+        grouping9: null,
+        GroupingReason: 'Matched on company_name',
+        GroupId: 'V02560-Dropbox AU BU',
+        'Duplicate Total Spend1': 140522.3,
+        IsHighestSpendInGroup: 'Yes'
+      },
+      {
+        ExcludeReason: null,
+        DataSource: 241008,
+        VendorTagConfidence: null,
+        Co: 'Dropbox INC BU',
+        vendor_id: 'V02572-Dropbox INC BU',
+        company_name: 'Evanta Ventures Inc.',
+        company_name_alt: null,
+        parent_vendor_id: null,
+        parent_company_name: null,
+        tax_id: '26-0339145',
+        TaxIDSource: null,
+        TaxIDMatchLogic: null,
+        country: 'US',
+        CountrySource: null,
+        Data_Quality_Score: 0,
+        supplier_group: null,
+        SupplierGroupSource: null,
+        vendor_type: null,
+        VendorTypeSource: null,
+        VMSupplierID: null,
+        vm_supplier_name: null,
+        vm_supplier_name_alt: null,
+        vm_vendor_type: null,
+        vm_tax_id: null,
+        vm_country: null,
+        vm_Data_Quality_Score: 0,
+        FY2015_spend: 80855,
+        FY2016_spend: 80855,
+        FY2017_spend: 80855,
+        FY2018_spend: 80855,
+        FY2019_spend: 80855,
+        FY2020_spend: 80855,
+        FY2021_spend: 80855,
+        FY2022_spend: 80855,
+        FY2023_spend: 80855,
+        FY2024_spend: 80855,
+        FY2025_spend: 80855,
+        persistentVendorFlag: null,
+        groupbySupplierFlag: null,
+        grouping1: null,
+        grouping2: null,
+        grouping3: null,
+        grouping4: null,
+        grouping5: null,
+        grouping6: null,
+        grouping7: null,
+        grouping8: null,
+        grouping9: null,
+        GroupingReason: null,
+        GroupId: null,
+        'Duplicate Total Spend1': null,
+        IsHighestSpendInGroup: null
+      },
+      {
+        ExcludeReason: null,
+        DataSource: 241008,
+        VendorTagConfidence: null,
+        Co: 'Dropbox INC BU',
+        vendor_id: 'V02737-Dropbox INC BU',
+        company_name: 'Digicert Inc',
+        company_name_alt: null,
+        parent_vendor_id: null,
+        parent_company_name: null,
+        tax_id: '87-0570204',
+        TaxIDSource: null,
+        TaxIDMatchLogic: null,
+        country: 'US',
+        CountrySource: null,
+        Data_Quality_Score: 0,
+        supplier_group: null,
+        SupplierGroupSource: null,
+        vendor_type: null,
+        VendorTypeSource: null,
+        VMSupplierID: null,
+        vm_supplier_name: null,
+        vm_supplier_name_alt: null,
+        vm_vendor_type: null,
+        vm_tax_id: null,
+        vm_country: null,
+        vm_Data_Quality_Score: 0,
+        FY2015_spend: 157861,
+        FY2016_spend: 157861,
+        FY2017_spend: 157861,
+        FY2018_spend: 157861,
+        FY2019_spend: 157861,
+        FY2020_spend: 157861,
+        FY2021_spend: 157861,
+        FY2022_spend: 157861,
+        FY2023_spend: 157861,
+        FY2024_spend: 157861,
+        FY2025_spend: 157861,
+        persistentVendorFlag: null,
+        groupbySupplierFlag: null,
+        grouping1: null,
+        grouping2: null,
+        grouping3: null,
+        grouping4: null,
+        grouping5: null,
+        grouping6: null,
+        grouping7: null,
+        grouping8: null,
+        grouping9: null,
+        GroupingReason: null,
+        GroupId: null,
+        'Duplicate Total Spend1': null,
+        IsHighestSpendInGroup: null
+      }
+    ];
+
+    const sheetNames = [
+      'Full_VM',
+      'Summary',
+      'ExculdedVM',
+      'VMCleandVendors',
+      'InvalidCompanyNameVM',
+      'ZeroSpendVM',
+      'ZeroSpendInLast3Years',
+      'NoMatch',
+      'ExistingAuditVendors',
+      'DupVendors',
+      'VMExtractedFromAP',
+      'NegativeSpendVM'
+    ];
+
+    return sheetNames.map(name => ({
+      name,
+      headers,
+      rows
+    }));
+  }
+
+  getAnalytics(companyId?: number) {
+    const vendors = companyId ? this.vendors.filter(v => v.companyId === companyId) : this.vendors;
+    const vendorIds = new Set(vendors.map(v => v.id));
+    const apTx = companyId ? this.apTransactions.filter(tx => vendorIds.has(tx.vendorId)) : this.apTransactions;
+    const spendByERP = this.aggregateSpendByErp(vendors);
     const riskDistribution = [
-      { bucket: '0-30', count: this.vendors.filter(v => v.riskScore <= 30).length },
-      { bucket: '31-70', count: this.vendors.filter(v => v.riskScore > 30 && v.riskScore <= 70).length },
-      { bucket: '71-100', count: this.vendors.filter(v => v.riskScore > 70).length }
+      { bucket: '0-30', count: vendors.filter(v => v.riskScore <= 30).length },
+      { bucket: '31-70', count: vendors.filter(v => v.riskScore > 30 && v.riskScore <= 70).length },
+      { bucket: '71-100', count: vendors.filter(v => v.riskScore > 70).length }
     ];
 
     return {
       spendByERP,
       riskDistribution,
       agingSummary: this.buildAging(),
-      spendStats: this.spendStats(),
-      topVendors: [...this.vendors].sort((a, b) => b.totalSpendFY2025 - a.totalSpendFY2025).slice(0, 5),
-      anomalies: this.findAnomalies(),
-      processStats: this.processStats(),
+      spendStats: this.spendStats(vendors),
+      topVendors: [...vendors].sort((a, b) => b.totalSpendFY2025 - a.totalSpendFY2025).slice(0, 5),
+      anomalies: this.findAnomalies(apTx),
+      processStats: this.processStats(apTx),
       activity: this.activityStats(),
-      dupeGroups: this.duplicateGroups,
+      dupeGroups: this.getDuplicateGroups(companyId),
       spendTrend: this.mockTrend(),
       riskTrend: this.mockRiskTrend(),
       candles: this.mockCandles(),
@@ -1302,9 +1918,9 @@ export class MockDataService {
     };
   }
 
-  private aggregateSpendByErp() {
+  private aggregateSpendByErp(vendors: Vendor[]) {
     const result: Record<string, number> = {};
-    for (const v of this.vendors) {
+    for (const v of vendors) {
       result[v.erpSource] = (result[v.erpSource] ?? 0) + v.totalSpendFY2025;
     }
     return Object.entries(result).map(([erp, amount]) => ({ erp, amount }));
@@ -1320,8 +1936,11 @@ export class MockDataService {
     ];
   }
 
-  private spendStats() {
-    const spends = this.vendors.map(v => v.totalSpendFY2025).sort((a, b) => a - b);
+  private spendStats(vendors: Vendor[]) {
+    if (!vendors.length) {
+      return { mean: 0, median: 0, variance: 0, stdDev: 0 };
+    }
+    const spends = vendors.map(v => v.totalSpendFY2025).sort((a, b) => a - b);
     const mean = spends.reduce((a, b) => a + b, 0) / spends.length;
     const median = spends[Math.floor(spends.length / 2)];
     const variance = spends.reduce((sum, s) => sum + Math.pow(s - mean, 2), 0) / spends.length;
@@ -1334,8 +1953,8 @@ export class MockDataService {
     };
   }
 
-  private findAnomalies() {
-    const anomalies = this.apTransactions
+  private findAnomalies(apTx: ApTransaction[]) {
+    const anomalies = apTx
       .filter(tx => tx.amount >= 500000 || tx.status === 'Reversed')
       .map(tx => ({
         ...tx,
@@ -1344,12 +1963,12 @@ export class MockDataService {
     return anomalies;
   }
 
-  private processStats() {
+  private processStats(apTx: ApTransaction[]) {
     // Mocked operational stats
     return {
       daysToPay: 28,
       latePaymentPct: 7,
-      reversalCount: this.apTransactions.filter(tx => tx.status === 'Reversed').length,
+      reversalCount: apTx.filter(tx => tx.status === 'Reversed').length,
       creditMemos: 2,
       lifecycleStats: {
         average: 24,
@@ -1422,7 +2041,37 @@ export class MockDataService {
     ];
   }
 
-  getApMockData(): ApMockRecord[] {
-    return this.apMock;
+  mergeVendors(keepVendorId: number, removeVendorIds: number[]) {
+    const keepIdx = this.vendors.findIndex(v => v.id === keepVendorId);
+    if (keepIdx === -1 || !removeVendorIds.length) return undefined;
+    const keep = this.vendors[keepIdx];
+    const toRemove = this.vendors.filter(v => removeVendorIds.includes(v.id));
+    if (!toRemove.length) return undefined;
+
+    const mergedSpendFY = toRemove.reduce((sum, v) => sum + v.totalSpendFY2025, 0);
+    const mergedSpendAll = toRemove.reduce((sum, v) => sum + v.totalSpendAllTime, 0);
+    keep.totalSpendFY2025 += mergedSpendFY;
+    keep.totalSpendAllTime += mergedSpendAll;
+    keep.hasOpenInvoices = keep.hasOpenInvoices || toRemove.some(v => v.hasOpenInvoices);
+    keep.riskScore = Math.max(keep.riskScore, ...toRemove.map(v => v.riskScore));
+    keep.duplicateProbability = Math.max(keep.duplicateProbability, ...toRemove.map(v => v.duplicateProbability));
+
+    this.apTransactions = this.apTransactions.map(tx =>
+      removeVendorIds.includes(tx.vendorId) ? { ...tx, vendorId: keepVendorId } : tx
+    );
+    this.vendors = this.vendors.filter(v => !removeVendorIds.includes(v.id));
+    this.duplicateGroups = this.duplicateGroups.map(g => ({
+      ...g,
+      vendors: g.vendors.filter(v => !removeVendorIds.includes(v.id))
+    }));
+
+    return {
+      mergedCount: toRemove.length,
+      mergedSpendFY2025: mergedSpendFY,
+      mergedSpendAllTime: mergedSpendAll,
+      newTotalSpendFY2025: keep.totalSpendFY2025,
+      newTotalSpendAllTime: keep.totalSpendAllTime,
+      keptVendor: keep
+    };
   }
 }

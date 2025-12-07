@@ -1,0 +1,98 @@
+<div class="page">
+  <div class="page__header hero">
+    <div class="hero__copy">
+      <p class="eyebrow">Scenarios</p>
+      <h2>Use cases</h2>
+      <p class="lede">Before/after snapshots from the proposal showing how the portal and Central Vendor System change the work.</p>
+      <div class="badges">
+        <span class="pill">Audit-ready</span>
+        <span class="pill">Master Vendor Repo</span>
+        <span class="pill">Exports</span>
+        <span class="pill">Alerts</span>
+      </div>
+    </div>
+    <div class="hero__actions">
+      <button mat-stroked-button color="primary" (click)="exportCsv()">
+        <mat-icon>file_download</mat-icon>
+        Export CSV
+      </button>
+      <button mat-stroked-button color="primary" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon>
+        Export Excel
+      </button>
+      <p class="microcopy">Snapshot these use cases for stakeholders.</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <mat-card class="card-block">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow">Scenario 1</p>
+          <h3>Duplicate vendor review for audit</h3>
+        </div>
+        <span class="pill pill--ghost">Audit-ready</span>
+      </div>
+      <ul>
+        <li><strong>Before:</strong> Manual ERP extracts, ad-hoc SQL and Excel deduping; every scope change means rework.</li>
+        <li><strong>After:</strong> Portal filters (client/date/rule set) run standardized duplicate logic on CUR_VM/CUR_AP; duplicate groups and audit-ready exports in hours.</li>
+      </ul>
+    </mat-card>
+
+    <mat-card class="card-block">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow">Scenario 2</p>
+          <h3>Missing or invalid TIN clean-up</h3>
+        </div>
+        <span class="pill pill--ghost">Data quality</span>
+      </div>
+      <ul>
+        <li><strong>Before:</strong> Excel filters and ad-hoc formulas to fix formats; little reuse of prior work.</li>
+        <li><strong>After:</strong> Data Quality dashboard shows TIN completeness/format KPIs; CUR_VM standardizes formats; Central Vendor System reuses validated TINs and outputs a remediation list.</li>
+      </ul>
+    </mat-card>
+
+    <mat-card class="card-block">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow">Scenario 3</p>
+          <h3>Cross-client vendor visibility</h3>
+        </div>
+        <span class="pill pill--ghost">Master Vendor Repository</span>
+      </div>
+      <ul>
+        <li><strong>Before:</strong> Separate Excel/SQL per engagement; manual searches and inconsistent matching rules.</li>
+        <li><strong>After:</strong> Central Vendor System maintains global identities; Vendor Overview shows where a vendor appears, high-level spend, and enriched sanctions/watchlist flags.</li>
+      </ul>
+    </mat-card>
+
+    <mat-card class="card-block">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow">Scenario 4</p>
+          <h3>Onboarding a new client engagement</h3>
+        </div>
+        <span class="pill pill--ghost">Onboarding</span>
+      </div>
+      <ul>
+        <li><strong>Before:</strong> Custom mappings and SQL per engagement; weeks before reliable insight.</li>
+        <li><strong>After:</strong> Standard RAW→SILVER→CUR_VM/CUR_AP pipeline with reusable transforms; Central Vendor System auto-matches vendors; portal quickly surfaces duplicates, spend metrics, and data quality issues.</li>
+      </ul>
+    </mat-card>
+
+    <mat-card class="card-block">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow">Scenario 5</p>
+          <h3>Management question: top vendors and spend trend</h3>
+        </div>
+        <span class="pill pill--ghost">Spend overview</span>
+      </div>
+      <ul>
+        <li><strong>Before:</strong> Custom queries or client reports exported to Excel; pivot tables rebuilt for every follow-up.</li>
+        <li><strong>After:</strong> Spend Overview dashboard with filters by date/company/region, instant top vendors and trends, and one-click export of underlying or summarized data.</li>
+      </ul>
+    </mat-card>
+  </div>
+</div>

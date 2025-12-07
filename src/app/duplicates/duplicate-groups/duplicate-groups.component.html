@@ -5,6 +5,15 @@
       <h2>Duplicate vendor groups</h2>
       <p class="lede">Fuzzy match confidence and ERP overlap across the mock dataset.</p>
     </div>
+    <div class="filters">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Company</mat-label>
+        <mat-select [(value)]="selectedCompany" (selectionChange)="applyFilter()">
+          <mat-option value="all">All companies</mat-option>
+          <mat-option *ngFor="let c of companies" [value]="c.id">{{ c.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <div class="actions">
       <span class="pill pill--muted">Review before merging</span>
       <button mat-stroked-button color="primary" (click)="exportCsv()">
@@ -18,8 +27,8 @@
     </div>
   </div>
 
-  <div class="group-grid">
-    <div *ngFor="let g of groups" class="card group-card">
+  <div class="group-grid" *ngIf="filteredGroups.length; else noGroups">
+    <div *ngFor="let g of filteredGroups" class="card group-card">
       <div class="group-card__head">
         <div>
           <p class="eyebrow">Group #{{ g.groupId }}</p>
@@ -38,8 +47,18 @@
             <span>Risk: {{ v.riskScore }}</span>
             <span>Dup: {{ v.duplicateProbability | percent:'1.0-0' }}</span>
           </div>
+          <button mat-stroked-button color="warn" (click)="keepOnlyVendor(g.groupId, v.id)">
+            Keep this, delete others
+          </button>
         </div>
       </div>
     </div>
   </div>
+
+  <ng-template #noGroups>
+    <div class="card empty-state">
+      <p class="eyebrow">No duplicates for this company</p>
+      <p>Try switching companies to see other clusters.</p>
+    </div>
+  </ng-template>
 </div>

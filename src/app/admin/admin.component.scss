@@ -12,6 +12,16 @@
   flex-wrap: wrap;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.company-filter {
+  width: 200px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -55,6 +65,13 @@
 
 .logs {
   border: 1px solid var(--card-border);
+}
+
+.benefits ul {
+  margin: 8px 0 0 16px;
+  color: var(--text-muted);
+  display: grid;
+  gap: 6px;
 }
 
 .log-list {

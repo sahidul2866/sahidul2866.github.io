@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MockDataService } from '../../services/mock-data.service';
 import { Vendor } from '../../models/vendor.model';
+import { Company } from '../../models/company.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -15,6 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 
 @Component({
@@ -31,13 +33,17 @@ import { Router } from '@angular/router';
     MatButtonModule,
     MatIconModule,
     MatSelectModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatCardModule
   ],
   templateUrl: './vendor-list.component.html',
   styleUrls: ['./vendor-list.component.scss']
 })
 export class VendorListComponent implements OnInit, AfterViewInit {
 
+  companies: Company[] = [];
+  selectedCompany?: Company;
+  companyVendors: Vendor[] = [];
   displayedColumns: string[] = [
     'name',
     'erpSource',
@@ -77,22 +83,28 @@ export class VendorListComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    const vendors = this.mockData.getVendors();
-    this.erpOptions = ['all', ...new Set(vendors.map(v => v.erpSource))];
-    this.dataSource.data = vendors;
+    this.companies = this.mockData.getCompanies();
     this.dataSource.filterPredicate = (data, filter) => this.matchesFilter(data, filter);
-    this.totalSpend = vendors.reduce((sum, v) => sum + v.totalSpendFY2025, 0);
-    this.reviewCount = vendors.filter(v => v.status.toLowerCase() === 'review').length;
-    this.activeCount = vendors.filter(v => v.status.toLowerCase() === 'active').length;
-    this.openInvoiceCount = vendors.filter(v => v.hasOpenInvoices).length;
-    this.averageRisk = vendors.length
-      ? Math.round(vendors.reduce((sum, v) => sum + v.riskScore, 0) / vendors.length)
-      : 0;
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  selectCompany(company: Company) {
+    this.selectedCompany = company;
+    this.resetFilters(false);
+    const vendors = this.mockData.getVendorsByCompany(company.id);
+    this.setVendors(vendors);
+  }
+
+  clearSelection() {
+    this.selectedCompany = undefined;
+    this.companyVendors = [];
+    this.dataSource.data = [];
+    this.resetFilters(false);
+    this.resetStats();
   }
 
   applyTextFilter(event: Event) {
@@ -104,16 +116,20 @@ export class VendorListComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = JSON.stringify(this.filters);
   }
 
-  resetFilters() {
+  resetFilters(apply = true) {
     this.filters = { search: '', erp: 'all', status: 'all', riskMin: 0, duplicateMin: 0, openOnly: false };
-    this.applyFilters();
+    if (apply) {
+      this.applyFilters();
+    }
   }
 
   exportCsv() {
+    if (!this.selectedCompany) return;
     this.download('vendors.csv');
   }
 
   exportExcel() {
+    if (!this.selectedCompany) return;
     this.download('vendors.xlsx');
   }
 
@@ -141,6 +157,32 @@ export class VendorListComponent implements OnInit, AfterViewInit {
 
   openVendor(vendor: Vendor) {
     this.router.navigate(['/vendors', vendor.id]);
+  }
+
+  private setVendors(vendors: Vendor[]) {
+    this.companyVendors = vendors;
+    this.erpOptions = ['all', ...new Set(vendors.map(v => v.erpSource))];
+    this.dataSource.data = vendors;
+    this.refreshStats(vendors);
+    this.applyFilters();
+  }
+
+  private refreshStats(vendors: Vendor[]) {
+    this.totalSpend = vendors.reduce((sum, v) => sum + v.totalSpendFY2025, 0);
+    this.reviewCount = vendors.filter(v => v.status.toLowerCase() === 'review').length;
+    this.activeCount = vendors.filter(v => v.status.toLowerCase() === 'active').length;
+    this.openInvoiceCount = vendors.filter(v => v.hasOpenInvoices).length;
+    this.averageRisk = vendors.length
+      ? Math.round(vendors.reduce((sum, v) => sum + v.riskScore, 0) / vendors.length)
+      : 0;
+  }
+
+  private resetStats() {
+    this.totalSpend = 0;
+    this.reviewCount = 0;
+    this.activeCount = 0;
+    this.openInvoiceCount = 0;
+    this.averageRisk = 0;
   }
 
   private matchesFilter(v: Vendor, filterJson: string) {

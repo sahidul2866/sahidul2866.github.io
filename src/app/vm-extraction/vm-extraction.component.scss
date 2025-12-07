@@ -1,0 +1,49 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search {
+  min-width: 260px;
+}
+
+.tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tab-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.table-wrap {
+  max-width: 100%;
+  overflow: auto;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  color: var(--text-primary);
+}
+
+th, td {
+  white-space: nowrap;
+}

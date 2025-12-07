@@ -16,41 +16,32 @@
   </div>
 
   <mat-card class="card-block">
-    <h3>Roles & responsibilities</h3>
+    <h3>Governance & security guardrails</h3>
     <ul>
-      <li><strong>Project Sponsor (Exec):</strong> Budget approval, strategic alignment.</li>
-      <li><strong>Product Owner (Audit Governance):</strong> Define scope, prioritize features.</li>
-      <li><strong>Project Manager (Ops):</strong> Schedule tracking, risk management.</li>
-      <li><strong>Solution Architect (Data Platform):</strong> System design & Snowflake schema.</li>
-      <li><strong>Backend Engineers (Data Eng):</strong> APIs and duplicate logic.</li>
-      <li><strong>Frontend Developer (Internal Tools):</strong> UI and dashboards.</li>
-      <li><strong>QA/Testing:</strong> Validate data, performance, UI.</li>
-      <li><strong>Security Officer (IT/Security):</strong> Access control, data masking.</li>
-      <li><strong>End Users (Pilot Audit):</strong> Test, review, validate functionality.</li>
+      <li>Client financial data remains siloed; only vendor identity metadata is shared across clients.</li>
+      <li>Vendors are tagged as <strong>Validated</strong>, <strong>Pending Validation</strong>, or <strong>Client-Specific</strong>.</li>
+      <li>Row-level access, PII protection, and client opt-in policies enforced in Snowflake.</li>
+      <li>Full logging of user actions for governance and traceability.</li>
     </ul>
   </mat-card>
 
   <mat-card class="card-block">
     <h3>Risks & mitigations</h3>
     <ul>
-      <li><strong>Limited manpower:</strong> Hire contractual specialists.</li>
-      <li><strong>ERP variations:</strong> Standardized staging templates.</li>
-      <li><strong>Performance challenges:</strong> Snowflake clustering and caching.</li>
-      <li><strong>Security compliance:</strong> Data masking & role-based policies.</li>
-      <li><strong>Adoption reluctance:</strong> Training and change management.</li>
+      <li><strong>Complex ERP variations:</strong> Implement standardized staging templates.</li>
+      <li><strong>Performance challenges:</strong> Use Snowflake clustering and caching.</li>
+      <li><strong>Security compliance/PII exposure:</strong> Apply data masking and role-based policies.</li>
     </ul>
   </mat-card>
 
   <mat-card class="card-block">
     <h3>Team recommendation</h3>
-    <p>Engage a contractual team to deliver on time while core audit teams stay focused.</p>
+    <p>Engage a contractual development team while core audit teams stay focused on governance and review.</p>
     <ul>
-      <li>Snowflake Data Engineer (4–6 months) – schemas/pipelines (CUR_VM/CUR_AP).</li>
-      <li>Backend API Developer (4 months) – REST APIs and integrations.</li>
-      <li>Frontend Developer (4 months) – portal UI.</li>
-      <li>QA/Test Automation (3 months) – validate data and performance.</li>
-      <li>UX Designer (part-time, 1–2 months) – audit-friendly UI.</li>
+      <li>Snowflake Data Engineer (1) – 4–6 months; build CUR_VM/CUR_AP schemas and pipelines.</li>
+      <li>Backend API Developer (1) – 4 months; create REST APIs and integrations.</li>
+      <li>Frontend Developer (1) – 4 months; develop the portal interface.</li>
     </ul>
-    <p class="lede">Hire from the Indian subcontinent to optimize cost; plan knowledge transfer to Bedrock team post-launch.</p>
+    <p class="lede">Plan for knowledge handover to the Bedrock data team post-launch to sustain improvements.</p>
   </mat-card>
 </div>

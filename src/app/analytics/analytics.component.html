@@ -5,6 +5,13 @@
       <h2>Analytics</h2>
       <p class="lede">Distribution views across spend, risk buckets, and AP aging using the mock data.</p>
     </div>
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Company</mat-label>
+      <mat-select [(value)]="selectedCompany" (selectionChange)="applyCompanyFilter()">
+        <mat-option value="all">All companies</mat-option>
+        <mat-option *ngFor="let c of companies" [value]="c.id">{{ c.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <div class="header-actions">
       <span class="pill pill--muted">Static mock feed</span>
       <button mat-stroked-button color="primary" (click)="exportCsv()">
@@ -352,6 +359,86 @@
         <div class="kpi-row">
           <span>Std dev</span>
           <strong>{{ spendStats?.stdDev | currency:'USD':'symbol':'1.0-0' }}</strong>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <mat-card class="chart-card">
+    <div class="chart-card__header">
+      <div>
+        <p class="eyebrow">Operational snapshot</p>
+        <h3>Vendor/AP metrics by company</h3>
+      </div>
+      <span class="pill pill--muted">Mock data</span>
+    </div>
+    <div class="metric-table">
+      <div class="metric-table__header">
+        <div class="metric-cell metric-cell--head">Metric</div>
+        <div class="metric-cell metric-cell--head" *ngFor="let col of metricTableColumns">{{ col }}</div>
+      </div>
+      <div class="metric-row" *ngFor="let row of metricTable">
+        <div class="metric-cell metric-cell--metric">{{ row.metric }}</div>
+        <div class="metric-cell" *ngFor="let value of row.values">{{ value | number:'1.0-2' }}</div>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="chart-card">
+    <div class="chart-card__header">
+      <div>
+        <p class="eyebrow">QA stats</p>
+        <h3>Data quality summary</h3>
+      </div>
+      <span class="pill pill--muted">Static extract</span>
+    </div>
+    <div class="qa-grid">
+      <div class="qa-card" *ngFor="let s of qaStats">
+        <p class="qa-label">{{ s.label }}</p>
+        <h4 class="qa-value">
+          <ng-container *ngIf="s.currency; else plainVal">{{ s.value | currency:'USD':'symbol':'1.0-0' }}</ng-container>
+          <ng-template #plainVal>{{ s.value | number:'1.0-0' }}</ng-template>
+          <span class="qa-note" *ngIf="s.note">{{ s.note }}</span>
+        </h4>
+      </div>
+    </div>
+  </mat-card>
+
+  <div class="grid">
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Invoice volume</p>
+          <h3>Invoice count distribution</h3>
+        </div>
+      </div>
+      <div class="dist-table">
+        <div class="dist-row dist-head">
+          <div class="dist-cell dist-cell--year">Year</div>
+          <div class="dist-cell" *ngFor="let m of months">{{ m }}</div>
+        </div>
+        <div class="dist-row" *ngFor="let row of invoiceDistribution">
+          <div class="dist-cell dist-cell--year">{{ row.year }}</div>
+          <div class="dist-cell" *ngFor="let v of row.values">{{ v }}</div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <div class="chart-card__header">
+        <div>
+          <p class="eyebrow">Payment volume</p>
+          <h3>Payment count distribution</h3>
+        </div>
+      </div>
+      <div class="dist-table">
+        <div class="dist-row dist-head">
+          <div class="dist-cell dist-cell--year">Year</div>
+          <div class="dist-cell" *ngFor="let m of months">{{ m }}</div>
+        </div>
+        <div class="dist-row" *ngFor="let row of paymentDistribution">
+          <div class="dist-cell dist-cell--year">{{ row.year }}</div>
+          <div class="dist-cell" *ngFor="let v of row.values">{{ v }}</div>
         </div>
       </div>
     </mat-card>

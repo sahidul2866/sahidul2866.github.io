@@ -55,6 +55,18 @@
       <div class="stat-card__value">{{ stats?.duplicateGroups }}</div>
       <div class="stat-card__hint">Grouped by tax ID + fuzzy name</div>
     </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-card__label">Duplicate vendors</div>
+      <div class="stat-card__value">{{ dupStats?.dupVendors || 0 }}</div>
+      <div class="stat-card__hint">Across {{ dupStats?.groups || 0 }} groups</div>
+    </mat-card>
+
+    <mat-card class="stat-card stat-card--accent">
+      <div class="stat-card__label">Potential recovery</div>
+      <div class="stat-card__value">{{ dupStats?.potentialRecovery | currency:'USD':'symbol':'1.0-0' }}</div>
+      <div class="stat-card__hint">Open invoices in dupes: {{ dupStats?.openInvoices || 0 }}</div>
+    </mat-card>
   </div>
 
   <div class="two-col">

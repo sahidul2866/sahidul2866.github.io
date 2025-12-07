@@ -1,31 +1,95 @@
 <div class="page">
-  <div class="page__header">
-    <div>
+  <div class="page__header hero">
+    <div class="hero__copy">
       <p class="eyebrow">Delivery</p>
       <h2>Timeline & deliverables</h2>
-      <p class="lede">Phased plan, deliverables, and success metrics from the proposal.</p>
+      <p class="lede">9-phase plan from the proposal with clear outcomes, governance, and launch-readiness.</p>
+      <div class="badges">
+        <span class="pill">MVP ~27 weeks</span>
+        <span class="pill">Pilot-ready</span>
+        <span class="pill">Snowflake-native</span>
+        <span class="pill">Audit-first</span>
+      </div>
     </div>
-    <button mat-stroked-button color="primary" (click)="exportCsv()">
-      <mat-icon>file_download</mat-icon>
-      Export
-    </button>
-    <button mat-stroked-button color="primary" (click)="exportExcel()">
-      <mat-icon>file_download</mat-icon>
-      Excel
-    </button>
+    <div class="hero__actions">
+      <button mat-stroked-button color="primary" (click)="exportCsv()">
+        <mat-icon>file_download</mat-icon>
+        Export CSV
+      </button>
+      <button mat-stroked-button color="primary" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon>
+        Export Excel
+      </button>
+      <p class="microcopy">Shareable timeline + deliverables for steering meetings.</p>
+    </div>
   </div>
 
   <mat-card class="card-block">
-    <h3>Proposed timeline (MVP ~6 months)</h3>
-    <ul>
-      <li><strong>Phase 1 – Discovery & Design (3w):</strong> Requirements, UI mockups.</li>
-      <li><strong>Phase 2 – Data Foundation (4w):</strong> Snowflake schemas, ingestion setup.</li>
-      <li><strong>Phase 3 – API & Duplicate Engine (5w):</strong> Core logic and endpoints.</li>
-      <li><strong>Phase 4 – Frontend MVP (4w):</strong> Vendor/AP dashboards, filters, exports.</li>
-      <li><strong>Phase 5 – Security Setup (2w):</strong> SSO, masking, role-based access.</li>
-      <li><strong>Phase 6 – Pilot & QA (3w):</strong> Testing, feedback, refinements.</li>
-      <li><strong>Phase 7 – Launch & Training (2w):</strong> Rollout, docs, training.</li>
-      <li><strong>Phase 8 – Continuous Improvement:</strong> Enhancements, predictive features.</li>
+    <h3>Proposed timeline</h3>
+    <ul class="timeline">
+      <li>
+        <div class="phase-header">
+          <strong>Phase 1 – Discovery & Design</strong>
+          <span class="pill pill--ghost">3 weeks</span>
+        </div>
+        <p>Stakeholder workshops, requirements, data contracts, and UI mockups.</p>
+      </li>
+      <li>
+        <div class="phase-header">
+          <strong>Phase 2 – Data Foundation</strong>
+          <span class="pill pill--ghost">4 weeks</span>
+        </div>
+        <p>Snowflake RAW→SILVER→CURATED schemas, multi-ERP ingestion, staging templates.</p>
+      </li>
+      <li>
+        <div class="phase-header">
+          <strong>Phase 3 – API & Duplicate Engine</strong>
+          <span class="pill pill--ghost">5 weeks</span>
+        </div>
+        <p>Core logic and endpoints: REST APIs, duplicate detection rules, and audit logging.</p>
+      </li>
+      <li>
+        <div class="phase-header">
+          <strong>Phase 4 – Frontend MVP</strong>
+          <span class="pill pill--ghost">4 weeks</span>
+        </div>
+        <p>Portal shell, dashboards, filters, and export/import flows.</p>
+      </li>
+      <li>
+        <div class="phase-header">
+          <strong>Phase 5 – Security Setup</strong>
+          <span class="pill pill--ghost">2 weeks</span>
+        </div>
+        <p>SSO, masking, and role-based access.</p>
+      </li>
+      <li>
+        <div class="phase-header">
+          <strong>Phase 6 – Master Vendor Repository Development</strong>
+          <span class="pill pill--ghost">4 weeks</span>
+        </div>
+        <p>Schema design, validation rules, and integration into portal views.</p>
+      </li>
+      <li>
+        <div class="phase-header">
+          <strong>Phase 7 – Pilot & QA</strong>
+          <span class="pill pill--ghost">3 weeks</span>
+        </div>
+        <p>Testing, feedback, refinements.</p>
+      </li>
+      <li>
+        <div class="phase-header">
+          <strong>Phase 8 – Launch & Training</strong>
+          <span class="pill pill--ghost">2 weeks</span>
+        </div>
+        <p>Rollout, documentation, training.</p>
+      </li>
+      <li>
+        <div class="phase-header">
+          <strong>Phase 9 – Continuous Improvement</strong>
+          <span class="pill pill--ghost">Ongoing</span>
+        </div>
+        <p>Enhancements and predictive features.</p>
+      </li>
     </ul>
   </mat-card>
 
@@ -33,21 +97,11 @@
     <h3>Expected deliverables</h3>
     <ul>
       <li>Unified VM/AP schema in Snowflake (CUR_VM, CUR_AP, DUP tables).</li>
-      <li>Web portal with dashboards, filters, export/import options.</li>
+      <li>Master Vendor Repository with validation logic.</li>
+      <li>Web portal with dashboards, filters, and export/import options.</li>
       <li>Integrated duplicate detection and history lookup.</li>
       <li>Role-based security with full audit logs.</li>
       <li>Documentation and user training materials.</li>
-    </ul>
-  </mat-card>
-
-  <mat-card class="card-block">
-    <h3>Success metrics</h3>
-    <ul>
-      <li>Audit turnaround time: 60% faster than current Excel process.</li>
-      <li>Duplicate detection accuracy: ≥95% precision.</li>
-      <li>User adoption rate: ≥90% within 1 month.</li>
-      <li>Query response time: &lt;2 seconds (95th percentile).</li>
-      <li>Security breaches: 0.</li>
     </ul>
   </mat-card>
 </div>

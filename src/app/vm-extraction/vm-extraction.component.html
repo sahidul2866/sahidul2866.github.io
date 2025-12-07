@@ -1,0 +1,45 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <p class="eyebrow">VM extraction</p>
+      <h2>Dropbox VM workbook (tabs)</h2>
+      <p class="lede">Filter and export each sheet from the provided workbook.</p>
+    </div>
+    <mat-form-field appearance="outline" class="search">
+      <mat-label>Search all tabs</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [(ngModel)]="search" (ngModelChange)="applyFilter()" placeholder="Search across rows" />
+    </mat-form-field>
+  </div>
+
+  <mat-tab-group *ngIf="!loading && filteredSheets.length; else loadingTpl">
+    <mat-tab *ngFor="let sheet of filteredSheets" [label]="sheet.name">
+      <div class="tab-content">
+        <div class="tab-actions">
+          <div class="pill pill--muted">{{ sheet.rows.length }} rows</div>
+          <span class="pill pill--muted" *ngIf="sheet.sampled">Showing first 200 rows (sample)</span>
+          <span class="spacer"></span>
+          <button mat-stroked-button color="primary" (click)="exportSheet(sheet)">
+            <mat-icon>file_download</mat-icon>
+            Export CSV
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table mat-table [dataSource]="sheet.rows" class="mat-elevation-z0">
+            <ng-container *ngFor="let col of sheet.headers" [matColumnDef]="col">
+              <th mat-header-cell *matHeaderCellDef>{{ col }}</th>
+              <td mat-cell *matCellDef="let row">{{ row[col] }}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="sheet.headers"></tr>
+            <tr mat-row *matRowDef="let row; columns: sheet.headers;"></tr>
+          </table>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <ng-template #loadingTpl>
+    <div class="card" *ngIf="loading">Loading workbook...</div>
+    <div class="card" *ngIf="!loading && !filteredSheets.length">No sheets found in VM extraction file.</div>
+  </ng-template>
+</div>

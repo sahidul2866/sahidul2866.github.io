@@ -1,56 +1,80 @@
 <div class="page">
-  <div class="page__header">
-    <div>
+  <div class="page__header hero">
+    <div class="hero__copy">
       <p class="eyebrow">Project Overview</p>
       <h2>Bedrock VM/AP Analytics Portal</h2>
-      <p class="lede">Purpose, background, and why the portal matters.</p>
+      <p class="lede">Centralized, scalable, and secure Snowflake-native portal replacing slow, manual Excel workflows for VM/AP analysis.</p>
+      <div class="badges">
+        <span class="pill">Snowflake</span>
+        <span class="pill">Audit-ready</span>
+        <span class="pill">SSO + RLS</span>
+        <span class="pill">Exports</span>
+      </div>
+    </div>
+    <div class="hero__actions">
+      <button mat-stroked-button color="primary" (click)="exportCsv()">
+        <mat-icon>file_download</mat-icon>
+        Export overview
+      </button>
+      <button mat-stroked-button color="primary" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon>
+        Excel
+      </button>
+      <p class="microcopy">Share with stakeholders or attach to the steering deck.</p>
     </div>
   </div>
 
-  <mat-card class="card-block">
-    <h3>Purpose</h3>
-    <p>
-      Replace slow, manual, Excel-based VM/AP analysis with a centralized, secure, and scalable Snowflake-powered portal.
-      Deliver instant duplicate detection, historical spend visibility, and audit-ready reporting with zero manual file transfers.
-    </p>
-    <button mat-stroked-button color="primary" (click)="exportCsv()">
-      <mat-icon>file_download</mat-icon>
-      Export overview
-    </button>
-    <button mat-stroked-button color="primary" (click)="exportExcel()">
-      <mat-icon>file_download</mat-icon>
-      Excel
-    </button>
-  </mat-card>
-
   <div class="grid">
+    <mat-card class="card-block">
+      <h3>Purpose</h3>
+      <p>
+        Replace slow, manual, Excel-based VM/AP analysis with a centralized, secure, and scalable Snowflake-powered portal.
+        Detect duplicate vendors/invoices quickly and consistently, access granular historical spend without file transfers,
+        generate audit-ready reports from live Snowflake data, and stand up a reusable Central Vendor System.
+      </p>
+    </mat-card>
+
     <mat-card class="card-block">
       <h3>Background & Current Challenges</h3>
       <ul>
-        <li>Analysts run SQL manually across ERPs; results exported to Excel and emailed.</li>
-        <li>No version control or data lineage; audit reviews tracked separately.</li>
-        <li>ERP extracts too large for Excel; incomplete datasets and slow analysis.</li>
-        <li>Security risk from emailed vendor/payment data; PII exposure potential.</li>
-        <li>Every ERP needs different logic; hard to standardize or automate.</li>
-        <li>No permanent audit trail; weak defensibility during audits.</li>
+        <li>Manual workflow: heavy dependence on ad-hoc SQL and Excel per engagement.</li>
+        <li>Excel dependency: repeat build of structures/reports; version confusion and data loss.</li>
+        <li>High data volume: ERP extracts too large for Excel; incomplete AP history and slow analysis.</li>
+        <li>Limited reuse: hard to reuse duplicate knowledge or risk signals across clients.</li>
+        <li>Human error and weak lineage when preparing audit files.</li>
+        <li>Security risks from emailed vendor/payment data and potential PII exposure.</li>
+        <li>Scalability issues with different ERP logic and no standardized automation.</li>
+        <li>Lack of transparency: no permanent audit trail, weak defensibility, and inefficient use of data team time.</li>
       </ul>
     </mat-card>
+  </div>
 
+  <div class="grid two">
     <mat-card class="card-block">
       <h3>Why build the portal</h3>
       <ul>
         <li>Centralize data in Snowflake as a single source of truth.</li>
-        <li>Real-time duplicate detection, spend metrics, and audit dashboards.</li>
-        <li>Self-service analytics for auditors/managers without SQL.</li>
-        <li>Reduce processing time and manual errors by 60%+.</li>
-        <li>Establish traceability, governance, and security compliance.</li>
+        <li>Enable real-time duplicate detection, spend metrics, and audit dashboards.</li>
+        <li>Provide self-service analytics to auditors/managers without SQL.</li>
+        <li>Cut processing time and manual errors by 60%+.</li>
+        <li>Ensure traceability, governance, and security compliance.</li>
+      </ul>
+    </mat-card>
+
+    <mat-card class="card-block card-accent">
+      <h3>Master Vendor Repository (cross-client)</h3>
+      <ul>
+        <li>Consolidates and enriches vendor identities across clients plus selected public sources.</li>
+        <li>Builds a validated global dataset (name, tax ID, address, contact) to reduce redundancy.</li>
+        <li>Tags vendors as Validated, Pending Validation, or Client-Specific; keeps client transactions siloed.</li>
+        <li>Accelerates onboarding and delivers consistent, cross-client reporting with better risk checks.</li>
       </ul>
     </mat-card>
   </div>
 
-  <mat-card class="card-block">
+  <mat-card class="card-block highlight">
     <h3>Non-technical summary</h3>
-    <p>Secure login, live Snowflake data, interactive dashboards, browser-based filtering/commenting/export, full audit logging.</p>
-    <p class="quote">“No more Excel chaos, no more SQL re-runs — just clean, auditable data available 24/7.”</p>
+    <p>Secure, instant access to live vendor and AP data, no Excel/email file sharing, interactive dashboards with filtering, commenting, exporting, and full audit logging.</p>
+    <p class="quote">“No more Excel chaos, no more SQL re-runs—just clean, auditable data available 24/7.”</p>
   </mat-card>
 </div>

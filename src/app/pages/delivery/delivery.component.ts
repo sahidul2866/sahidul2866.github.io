@@ -15,8 +15,8 @@ export class DeliveryComponent {
   exportCsv() {
     const lines = [
       'Section,Detail',
-      'Timeline,"Phases 1-8 covering discovery to continuous improvement (~6 months)"',
-      'Deliverables,"Snowflake schemas, portal dashboards, duplicate detection, security, docs/training"',
+      'Timeline,"9 phases: Discovery/Design (3w); Data Foundation (4w); API & Duplicate Engine (5w); Frontend MVP (4w); Security Setup (2w); Master Vendor Repository (4w); Pilot & QA (3w); Launch & Training (2w); Continuous Improvement (ongoing)"',
+      'Deliverables,"Snowflake CUR_VM/CUR_AP/DUP + Master Vendor Repository; portal dashboards/filters/exports; duplicate explainability; SSO/RLS/masking; audit logs; runbooks; training"',
       'Success Metrics,"60% faster audits; >=95% dupe precision; >=90% adoption; <2s queries; zero breaches"'
     ];
     this.download(lines, 'delivery.csv');
@@ -25,8 +25,8 @@ export class DeliveryComponent {
   exportExcel() {
     const lines = [
       'Section,Detail',
-      'Timeline,"Phases 1-8 covering discovery to continuous improvement (~6 months)"',
-      'Deliverables,"Snowflake schemas, portal dashboards, duplicate detection, security, docs/training"',
+      'Timeline,"9 phases: Discovery/Design (3w); Data Foundation (4w); API & Duplicate Engine (5w); Frontend MVP (4w); Security Setup (2w); Master Vendor Repository (4w); Pilot & QA (3w); Launch & Training (2w); Continuous Improvement (ongoing)"',
+      'Deliverables,"Snowflake CUR_VM/CUR_AP/DUP + Master Vendor Repository; portal dashboards/filters/exports; duplicate explainability; SSO/RLS/masking; audit logs; runbooks; training"',
       'Success Metrics,"60% faster audits; >=95% dupe precision; >=90% adoption; <2s queries; zero breaches"'
     ];
     this.download(lines, 'delivery.xlsx');

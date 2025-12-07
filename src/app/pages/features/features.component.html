@@ -1,67 +1,93 @@
 <div class="page">
-  <div class="page__header">
-    <div>
+  <div class="page__header hero">
+    <div class="hero__copy">
       <p class="eyebrow">Capabilities</p>
       <h2>Features & dashboards</h2>
-      <p class="lede">Core features, advanced analytics, and ML-enhanced options from the proposal.</p>
+      <p class="lede">Snowflake-native VM/AP portal aligned to the proposal: duplicate detection, dashboards, exports, and security.</p>
+      <div class="badges">
+        <span class="pill">SSO + RLS</span>
+        <span class="pill">Audit trail</span>
+        <span class="pill">Exports</span>
+        <span class="pill">Master Vendor Repo</span>
+      </div>
     </div>
-    <button mat-stroked-button color="primary" (click)="exportCsv()">
-      <mat-icon>file_download</mat-icon>
-      Export
-    </button>
-    <button mat-stroked-button color="primary" (click)="exportExcel()">
-      <mat-icon>file_download</mat-icon>
-      Excel
-    </button>
+    <div class="hero__actions">
+      <button mat-stroked-button color="primary" (click)="exportCsv()">
+        <mat-icon>file_download</mat-icon>
+        Export CSV
+      </button>
+      <button mat-stroked-button color="primary" (click)="exportExcel()">
+        <mat-icon>file_download</mat-icon>
+        Export Excel
+      </button>
+      <p class="microcopy">Quick snapshots of feature inventory for stakeholders.</p>
+    </div>
   </div>
 
-  <mat-card class="card-block">
-    <h3>Core features</h3>
-    <ul>
-      <li>Duplicate detection by tax ID, name, address, email.</li>
-      <li>Vendor & AP history (invoices, payments, reviews) across fiscal years.</li>
-      <li>KPIs: total spend, vendors with no spend, excluded vendors.</li>
-      <li>Advanced filtering/sorting by ERP, FY, vendor group, spend.</li>
-      <li>Server-side pagination for large datasets.</li>
-      <li>Export to Excel/CSV; import reviewer notes.</li>
-      <li>Security & roles with SSO and row-level access.</li>
-      <li>Audit trail for reviews/changes; scalable to new ERPs.</li>
-    </ul>
-  </mat-card>
+  <div class="feature-grid">
+    <mat-card class="card-block">
+      <h3>Duplicate detection</h3>
+      <ul>
+        <li>Identify potential duplicate vendors and invoices using configurable rules and fuzzy matching.</li>
+        <li>Group duplicates with clear reasons (same TIN, name + address, email match).</li>
+        <li>Allow audit/data teams to review, flag, or export duplicate groups and invoices.</li>
+      </ul>
+    </mat-card>
 
-  <mat-card class="card-block">
-    <h3>Advanced analytics & stats</h3>
-    <ul>
-      <li>Statistical spend profiling: mean/median/variance/std across vendors/categories/ERPs/FYs.</li>
-      <li>Anomaly & outlier detection (IQR, Z-score + ML) for invoice amounts, payment frequency, duplicate payments.</li>
-      <li>Vendor risk scoring: missing tax ID, inconsistent names, bank mismatches, reversals, duplicate likelihood.</li>
-      <li>Payment pattern analysis: unusual terms, same-day/recurring/split payments.</li>
-      <li>GL-level trends & variance; aging buckets 0–30/31–60/61–90/90+.</li>
-      <li>Spend seasonality and invoice–payment lifecycle stats (avg days to pay, late/early, credit memos).</li>
-      <li>User activity analytics for reviewer productivity and audit traceability.</li>
-    </ul>
-  </mat-card>
+    <mat-card class="card-block">
+      <h3>Dashboards and metrics</h3>
+      <ul>
+        <li>Visualize vendor and AP statistics: total spend, number of vendors, top vendors by spend.</li>
+        <li>Trend and fiscal year comparisons with breakdowns by company, region, or ERP.</li>
+        <li>Data quality metrics for missing TINs, invalid addresses, and incomplete contact info.</li>
+      </ul>
+    </mat-card>
 
-  <mat-card class="card-block">
-    <h3>ML-enhanced options</h3>
-    <ul>
-      <li>ML duplicate vendor detection with embeddings/similarity (≈98% accuracy).</li>
-      <li>AI vendor classification (Gov/Bank/University/Individual/Non-profit/Healthcare, etc.).</li>
-      <li>AI-assisted reason suggestions for exclude/review decisions.</li>
-      <li>Predictive spend forecasting from historical AP.</li>
-      <li>Fraud probability model (addresses, reversals, split invoices).</li>
-      <li>Smart semantic search (“vendors with repeated small invoices”).</li>
-    </ul>
-  </mat-card>
+    <mat-card class="card-block">
+      <h3>Audit-ready exports</h3>
+      <ul>
+        <li>Standardized export formats for duplicate vendor/invoice packs and vendor profiles with enriched attributes.</li>
+        <li>Transaction listings filtered by company, date range, or risk flag.</li>
+        <li>Designed to be audit-ready directly from live Snowflake data.</li>
+      </ul>
+    </mat-card>
 
-  <mat-card class="card-block">
-    <h3>Executive dashboards</h3>
-    <ul>
-      <li>Spend overview: total spend, top 10 vendors, variance by FY, GL breakdown, ERP-wise spend.</li>
-      <li>Vendor health: risk score, completeness, diversity, duplicate probability, missing fields.</li>
-      <li>AP process: days-to-pay, late %, reversals, credit memos, invoice lifecycle.</li>
-      <li>Audit activity: reviewed/pending rows, comments, reviewer performance.</li>
-      <li>Duplicate analysis: grouped vendors, top risky groups, false positives, exclusions.</li>
-    </ul>
-  </mat-card>
+    <mat-card class="card-block">
+      <h3>Data quality tools</h3>
+      <ul>
+        <li>Standardize and clean vendor names, addresses, and TIN formats.</li>
+        <li>Validation checks for phone numbers, postal codes, and email formats.</li>
+        <li>Flags for incomplete or inconsistent vendor records.</li>
+      </ul>
+    </mat-card>
+
+    <mat-card class="card-block">
+      <h3>Central Vendor Enrichment System</h3>
+      <ul>
+        <li>Cross-client vendor layer with signals from multiple Bedrock clients plus selected public/third-party sources.</li>
+        <li>Produces a 360° view of each vendor to boost duplicate detection and risk/compliance checks.</li>
+        <li>Keeps client transaction data siloed while sharing vendor identity metadata.</li>
+      </ul>
+    </mat-card>
+
+    <mat-card class="card-block">
+      <h3>Role-based access & security</h3>
+      <ul>
+        <li>Access profiles for data, audit, and leadership teams; row-level security where required.</li>
+        <li>SSO-based authentication and authorization with full logging of user actions.</li>
+        <li>Supports governance, traceability, and defensibility for audits.</li>
+      </ul>
+    </mat-card>
+
+    <mat-card class="card-block card-accent">
+      <h3>Future roadmap (Phase 2+)</h3>
+      <ul>
+        <li><strong>Predictive analytics:</strong> forecast vendor spend, cash flow/exposure, and predict data quality risks.</li>
+        <li><strong>Anomaly detection:</strong> flag unusual payment patterns, vendor behavior shifts, and enable anomaly review workflows.</li>
+        <li><strong>Supplier risk scoring:</strong> composite vendor risk score with prioritization and risk dashboards.</li>
+        <li><strong>Self-service rules & automation:</strong> configurable rules engine plus scheduled checks and alerts.</li>
+        <li><strong>Integration & productization:</strong> deeper ERP integrations, client feedback loops, and tiered product packages.</li>
+      </ul>
+    </mat-card>
+  </div>
 </div>

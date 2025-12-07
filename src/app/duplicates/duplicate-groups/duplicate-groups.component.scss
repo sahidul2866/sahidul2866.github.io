@@ -17,6 +17,16 @@
   gap: 8px;
 }
 
+.filters {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-field {
+  width: 220px;
+}
+
 .group-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -72,4 +82,11 @@
   gap: 8px;
   color: #8ba2c7;
   font-size: 12px;
+}
+
+.empty-state {
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
 }

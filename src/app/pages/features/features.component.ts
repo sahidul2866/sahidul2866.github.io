@@ -14,20 +14,30 @@ import { MatIconModule } from '@angular/material/icon';
 export class FeaturesComponent {
   exportCsv() {
     const sections = [
-      ['Core features', 'Duplicate detection, AP history, KPIs, filters, pagination, export/import, security, audit trail'],
-      ['Advanced analytics', 'Spend profiling, anomalies, risk scoring, payment analysis, GL trends, aging, lifecycle stats, user activity'],
-      ['ML options', 'ML dupes, AI classification, AI reasons, forecasting, fraud probability, semantic search'],
-      ['Executive dashboards', 'Spend overview, vendor health, AP process, audit activity, duplicate analysis']
+      ['Core platform', 'Duplicate detection, AP history, KPIs, filters, pagination, export/import'],
+      ['Workflow & collaboration', 'Assignments, approvals, inline comments, change logs, audit snapshots'],
+      ['Security & governance', 'SSO, RLS/masking, role-based gates, audit trail, retention/lineage'],
+      ['Master Vendor Repository', 'Validated vendor identities, auto-mapping, opt-in metadata sharing'],
+      ['Advanced analytics', 'Spend profiling, anomaly detection, risk scoring, payment patterns, lifecycle stats'],
+      ['ML & automation', 'Embedding dupes, AI classification, AI reasons, semantic search, forecasting, fraud probability'],
+      ['Executive dashboards', 'Spend overview, vendor health, AP process, audit activity, duplicate analysis'],
+      ['Reliability & operations', 'Health dashboards, alerts, ingestion reliability, staging templates, cost controls'],
+      ['UI/UX highlights', 'Sticky filters, KPI hero tiles, tooltips, skeletons, accessible and responsive visuals']
     ];
     this.download(sections, 'features.csv');
   }
 
   exportExcel() {
     const sections = [
-      ['Core features', 'Duplicate detection, AP history, KPIs, filters, pagination, export/import, security, audit trail'],
-      ['Advanced analytics', 'Spend profiling, anomalies, risk scoring, payment analysis, GL trends, aging, lifecycle stats, user activity'],
-      ['ML options', 'ML dupes, AI classification, AI reasons, forecasting, fraud probability, semantic search'],
-      ['Executive dashboards', 'Spend overview, vendor health, AP process, audit activity, duplicate analysis']
+      ['Core platform', 'Duplicate detection, AP history, KPIs, filters, pagination, export/import'],
+      ['Workflow & collaboration', 'Assignments, approvals, inline comments, change logs, audit snapshots'],
+      ['Security & governance', 'SSO, RLS/masking, role-based gates, audit trail, retention/lineage'],
+      ['Master Vendor Repository', 'Validated vendor identities, auto-mapping, opt-in metadata sharing'],
+      ['Advanced analytics', 'Spend profiling, anomaly detection, risk scoring, payment patterns, lifecycle stats'],
+      ['ML & automation', 'Embedding dupes, AI classification, AI reasons, semantic search, forecasting, fraud probability'],
+      ['Executive dashboards', 'Spend overview, vendor health, AP process, audit activity, duplicate analysis'],
+      ['Reliability & operations', 'Health dashboards, alerts, ingestion reliability, staging templates, cost controls'],
+      ['UI/UX highlights', 'Sticky filters, KPI hero tiles, tooltips, skeletons, accessible and responsive visuals']
     ];
     this.download(sections, 'features.xlsx');
   }

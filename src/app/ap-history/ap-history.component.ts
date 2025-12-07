@@ -12,6 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ApMockRecord } from '../models/ap-mock-record.model';
+import { Company } from '../models/company.model';
 import { MockDataService } from '../services/mock-data.service';
 
 @Component({
@@ -59,15 +60,15 @@ export class ApHistoryComponent implements OnInit, AfterViewInit {
     maxInv: ''
   };
 
+  companies: Company[] = [];
+  selectedCompany: 'all' | number = 'all';
   vendorOptions: string[] = [];
   constructor(private mockData: MockDataService) {}
 
   ngOnInit(): void {
-    const data = this.mockData.getApMockData();
-    this.dataSource.data = data;
+    this.companies = this.mockData.getCompanies();
     this.dataSource.filterPredicate = (row, json) => this.matches(row, json);
-    this.vendorOptions = ['all', ...new Set(data.map(d => d.VndName))];
-    this.applyFilters();
+    this.loadData();
   }
 
   ngAfterViewInit(): void {
@@ -87,6 +88,10 @@ export class ApHistoryComponent implements OnInit, AfterViewInit {
   resetFilters() {
     this.filters = { search: '', vendor: 'all', dupeOnly: false, minInv: '', maxInv: '' };
     this.applyFilters();
+  }
+
+  applyCompanyFilter() {
+    this.loadData();
   }
 
   exportCsv() {
@@ -126,5 +131,13 @@ export class ApHistoryComponent implements OnInit, AfterViewInit {
     link.download = filename;
     link.click();
     URL.revokeObjectURL(link.href);
+  }
+
+  private loadData() {
+    const companyId = this.selectedCompany === 'all' ? undefined : this.selectedCompany;
+    const data = this.mockData.getApMockData(companyId);
+    this.dataSource.data = data;
+    this.vendorOptions = ['all', ...new Set(data.map(d => d.VndName))];
+    this.applyFilters();
   }
 }

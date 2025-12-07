@@ -1,7 +1,12 @@
 export interface Vendor {
   id: number;
+  companyId: number;
   name: string;
   taxId?: string;
+  address?: string;
+  email?: string;
+  phone?: string;
+  contactName?: string;
   erpSource: string;
   totalSpendFY2025: number;
   totalSpendAllTime: number;
